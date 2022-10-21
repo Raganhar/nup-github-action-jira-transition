@@ -22,6 +22,7 @@ parser.WithNotParsed(
 await parser.WithParsedAsync(options =>
 {
    logger.LogInformation($"from: {options.From}");
+   Task.Delay(1000);
    Environment.Exit(0);
     return Task.CompletedTask;
 });
