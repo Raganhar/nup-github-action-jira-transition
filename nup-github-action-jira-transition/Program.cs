@@ -1,4 +1,6 @@
-﻿using IHost host = Host.CreateDefaultBuilder(args)
+﻿using Newtonsoft.Json;
+
+using IHost host = Host.CreateDefaultBuilder(args)
     // .ConfigureServices((_, services) => services.AddGitHubActionServices())
     .Build();
 
@@ -21,8 +23,8 @@ parser.WithNotParsed(
 
 await parser.WithParsedAsync(options =>
 {
-   logger.LogInformation($"from: {options.From}");
-   Task.Delay(1000);
+    new Logic(logger).DoDaThing(options);
+   
     return Task.CompletedTask;
 });
 Environment.Exit(0);
