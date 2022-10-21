@@ -14,6 +14,10 @@ public class ActionInputs
         }
     }
 
+    [Option('f',"from",
+        HelpText = "Source fx string or commits")]
+    public string From { get; set; }
+    
     [Option('o', "owner",
         Required = true,
         HelpText = "The owner, for example: \"dotnet\". Assign from `github.repository_owner`.")]

@@ -41,3 +41,5 @@ runs:
   - ${{ inputs.dir }}
   - '-w'
   - ${{ inputs.workspace }}
+  - '-f'
+  - ${{ inputs.from }}
