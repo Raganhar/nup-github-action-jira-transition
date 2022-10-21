@@ -27,3 +27,4 @@ jobs:
           name: ${{ github.repository }}
           branch: ${{ github.ref }}
           dir: ${{ './github-actions/DotNet.GitHubAction' }}
+          from: string
