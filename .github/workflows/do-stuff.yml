@@ -11,7 +11,7 @@ on:
         default: 'Force do stuff'
 
 jobs:
-  build:
+  run-fancy-thing:
 
     runs-on: ubuntu-latest
 
@@ -27,4 +27,5 @@ jobs:
           name: ${{ github.repository }}
           branch: ${{ github.ref }}
           dir: ${{ './github-actions/DotNet.GitHubAction' }}
-          from: string
+          from: text
+          text: NIC-6 | will search in branch name

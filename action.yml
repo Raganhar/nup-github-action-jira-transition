@@ -43,3 +43,5 @@ runs:
   - ${{ inputs.workspace }}
   - '-f'
   - ${{ inputs.from }}
+  - '-t'
+  - ${{ inputs.text }}

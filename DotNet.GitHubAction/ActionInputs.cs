@@ -14,6 +14,11 @@ public class ActionInputs
         }
     }
 
+    [Option('t',"text",
+        HelpText = "sample text")]
+    public string Text { get; set; }
+    
+
     [Option('f',"from",
         HelpText = "Source fx string or commits")]
     public string From { get; set; }
