@@ -20,6 +20,12 @@ inputs:
     description: 'The workspace directory.'
     required: false
     default: '/github/workspace'
+  from:
+    description: 'Where to search for jira tickets'
+    required: false
+  text:
+    description: 'Sample text to search'
+    required: false
 outputs:
   summary-title:
     description: 'The title of the code metrics action.'
