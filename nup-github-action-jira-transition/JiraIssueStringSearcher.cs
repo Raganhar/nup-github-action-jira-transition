@@ -11,6 +11,6 @@ public class JiraIssueStringSearcher
     {
         var matches = new Regex(issueIdRegex).Match(text);
 
-        return matches.Groups.Values.Select(x => x.Value).ToList();
+        return matches.Groups.Values.Select(x => x.Value).Distinct().ToList();
     }
 }
