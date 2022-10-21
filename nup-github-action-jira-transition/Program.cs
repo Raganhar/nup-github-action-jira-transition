@@ -1,5 +1,5 @@
 ﻿using IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((_, services) => services.AddGitHubActionServices())
+    // .ConfigureServices((_, services) => services.AddGitHubActionServices())
     .Build();
 
 static TService Get<TService>(IHost host)

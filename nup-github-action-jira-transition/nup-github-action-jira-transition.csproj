@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DotNet.CodeAnalysis\DotNet.CodeAnalysis.csproj" />
+    <Folder Include="Extensions" />
   </ItemGroup>
 
 </Project>
