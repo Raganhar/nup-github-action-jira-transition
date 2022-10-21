@@ -31,7 +31,7 @@ jobs:
 
     - name: .NET code metrics
       id: dotnet-code-metrics
-      uses: dotnet/samples/github-actions/DotNet.GitHubAction@main
+      uses: Raganhar/nup-github-action-jira-transition@main
       env:
         GREETINGS: 'Hello, .NET developers!' # ${{ secrets.GITHUB_TOKEN }}
       with:
