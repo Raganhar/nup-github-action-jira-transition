@@ -1,0 +1,29 @@
+name: .NET
+
+on:
+#  push:
+#    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'The reason for running the workflow'
+        required: true
+        default: 'Force do stuff'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: .NET code metrics
+          id: dotnet-code-metrics
+          uses: Raganhar/nup-github-action-jira-transition@main
+          env:
+            GREETINGS: 'Hello, .NET developers!' # ${{ secrets.GITHUB_TOKEN }}
+          with:
+            owner: ${{ github.repository_owner }}
+            name: ${{ github.repository }}
+            branch: ${{ github.ref }}
+            dir: ${{ './github-actions/DotNet.GitHubAction' }}
