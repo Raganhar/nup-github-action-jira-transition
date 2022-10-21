@@ -24,7 +24,7 @@ parser.WithNotParsed(
 await parser.WithParsedAsync(options =>
 {
     new Logic(logger).DoDaThing(options);
-   
+    Task.Delay(1000);
     return Task.CompletedTask;
 });
 Environment.Exit(0);
