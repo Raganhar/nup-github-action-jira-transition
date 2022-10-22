@@ -6,15 +6,24 @@ namespace tests;
 
 public class OctoTests
 {
+    private static GitGraph _gitGraph;
+
     [Test]
     public async Task CommitMessages_in_pr_Test()
     {
-        var msgs = await new GitGraph().listCommitMessagesInPullRequest("Raganhar", Utils.GetCredentials().githubToken, "nup-github-action-jira-transition",1,null);
+        var msgs = await _gitGraph.listCommitMessagesInPullRequest(1,null);
         Console.WriteLine(JsonConvert.SerializeObject(msgs, Formatting.Indented));
     }
+
+    private static GitGraph Setup()
+    {
+        var gitGraph = _gitGraph;
+        return gitGraph;
+    }
+
     [Test]
     public async Task NAME_Test()
     {
-        await new GitGraph().doStuff("Raganhar", Utils.GetCredentials().githubToken);
+        _gitGraph = new GitGraph("", "", "");
     }
 }

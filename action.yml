@@ -71,5 +71,3 @@ runs:
   - ${{ inputs.jira-api-key }}
   - 'github-token'
   - ${{ inputs.github-token }}
-  - 'event_path'
-  - ${{ github.event_path }}
