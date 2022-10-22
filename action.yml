@@ -67,9 +67,9 @@ runs:
   - ${{ inputs.jira-url }}
   - '--jira-user'
   - ${{ inputs.jira-user }}
-  - '--jira-api-key'
+  - '--jira-api-key'  
   - ${{ inputs.jira-api-key }}
   - '--github-token'
   - ${{ inputs.github-token }}
   - '--event_path'
-  - $GITHUB_CONTEXT
+  - ${{GITHUB_CONTEXT}}
