@@ -23,7 +23,7 @@ inputs:
   from:
     description: 'Where to search for jira tickets'
     required: false
-  jira_url:
+  jira-url:
     description: 'Sample text to search'
     required: true
   jira-user:
@@ -64,7 +64,7 @@ runs:
   - '-t'
   - ${{ inputs.text }}
   - '--jira-url'
-  - ${{ inputs.jira_url }}
+  - ${{ inputs.jira-url }}
   - '--jira-user'
   - ${{ inputs.jira-user }}
   - '--jira-api-key'  
