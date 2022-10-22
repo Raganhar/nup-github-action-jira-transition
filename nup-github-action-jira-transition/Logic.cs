@@ -1,4 +1,5 @@
 ﻿using DotNet.GitHubAction.JiraLogic;
+using DotNet.GitHubAction.OctoStuff;
 using Newtonsoft.Json;
 
 namespace DotNet.GitHubAction;
@@ -7,7 +8,7 @@ public class Logic
 {
     private readonly ILogger _logger;
 
-    public Logic(ILogger logger, JiraAbstraction jiraAbstraction)
+    public Logic(ILogger logger, JiraAbstraction jiraAbstraction, GitGraph gitGraph)
     {
         _logger = logger;
     }
@@ -21,6 +22,7 @@ public class Logic
         }
         else
         {
+            
             _logger.LogInformation($"Should get jira IDs from git");   
         }
     }

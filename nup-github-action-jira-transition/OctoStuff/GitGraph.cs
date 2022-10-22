@@ -7,12 +7,22 @@ namespace DotNet.GitHubAction.OctoStuff;
 
 public class GitGraph
 {
-    public async Task<List<CommitMessageInfo>> listCommitMessagesInPullRequest(string repoowner,string github_token, string repo, int prnumber, string after)
+    private string _repoowner;
+    private string _githubToken;
+    private string _repo;
+
+    public GitGraph(string repoowner, string githubToken, string repo)
     {
-        var connection = new Connection(new ProductHeaderValue("bob"), github_token);
+        _repoowner = repoowner;
+        _githubToken = githubToken;
+        _repo = repo;
+    }
+    public async Task<List<CommitMessageInfo>> listCommitMessagesInPullRequest(int prnumber, string after)
+    {
+        var connection = new Connection(new ProductHeaderValue("bob"), _githubToken);
 
         var query = new Query()
-            .RepositoryOwner(repoowner).Repository(repo).PullRequest(prnumber)
+            .RepositoryOwner(_repoowner).Repository(_repo).PullRequest(prnumber)
             .Commits(100, after)
             .Nodes
             .Select(x => new CommitMessageInfo()

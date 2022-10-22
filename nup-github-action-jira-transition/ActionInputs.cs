@@ -14,6 +14,10 @@ public class ActionInputs
         }
     }
 
+    [Option("event_path", HelpText = "sample text")]
+    public string event_path { get; set; }
+    [Option("github-token", HelpText = "sample text")]
+    public string github_token { get; set; }
     [Option('u', "jira-url", HelpText = "sample text")]
     public string JiraUrl { get; set; }
 

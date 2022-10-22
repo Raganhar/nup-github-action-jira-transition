@@ -1,4 +1,5 @@
 ﻿using DotNet.GitHubAction.JiraLogic;
+using DotNet.GitHubAction.OctoStuff;
 using Newtonsoft.Json;
 
 using IHost host = Host.CreateDefaultBuilder(args)
@@ -24,7 +25,10 @@ parser.WithNotParsed(
 
 await parser.WithParsedAsync(options =>
 {
-    new Logic(logger, new JiraAbstraction(options.JiraUrl,options.JiraUser,options.JiraApiKey)).DoDaThing(options);
+    logger.LogInformation($"options: {JsonConvert.SerializeObject(options, Formatting.Indented)}");     
+    // var jiraAbstraction = new JiraAbstraction(options.JiraUrl,options.JiraUser,options.JiraApiKey);
+    // var gitGraph = new GitGraph(options.Owner, options.github_token,options.re);
+    // new Logic(logger, jiraAbstraction, gitGraph).DoDaThing(options);
     Task.Delay(1000);
     return Task.CompletedTask;
 });

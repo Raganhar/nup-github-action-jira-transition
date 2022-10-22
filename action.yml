@@ -35,6 +35,9 @@ inputs:
   text:
     description: 'Sample text to search'
     required: false
+  github-token:
+    description: 'Sample text to search'
+    required: true
 outputs:
   summary-title:
     description: 'The title of the code metrics action.'
@@ -66,3 +69,7 @@ runs:
   - ${{ inputs.jira-user }}
   - '-jira-api-key'
   - ${{ inputs.jira-api-key }}
+  - 'github-token'
+  - ${{ inputs.github-token }}
+  - 'event_path'
+  - ${{ github.event_path }}
