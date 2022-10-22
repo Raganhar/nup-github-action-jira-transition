@@ -34,7 +34,6 @@ public class Logic
         }
         else
         {
-            // _githubContext.Event
             var msgs = await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "");
             
             // find ids
