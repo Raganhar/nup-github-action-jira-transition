@@ -35,7 +35,7 @@ public class Logic
         else
         {
             var msgs = await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "");
-            
+            _logger.LogInformation($"Found the following commit messages: {JsonConvert.SerializeObject(msgs,Formatting.Indented)}");
             // find ids
             var ids = FindIssueKeys(msgs);
             _logger.LogInformation($"Found the following Ids in commit messages: {JsonConvert.SerializeObject(ids,Formatting.Indented)}");
