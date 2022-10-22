@@ -36,5 +36,5 @@ jobs:
           from: text
           text: NIC-6 | will search in branch name
           jira-api-key: ${{ github.JIRA_API_TOKEN }}
-          jira-url: ${{ github.JIRA_BASE_URL }}
+          JIRA_BASE_URL: ${{ github.JIRA_BASE_URL }}
           jira-user: ${{ github.JIRA_USER_EMAIL }}
