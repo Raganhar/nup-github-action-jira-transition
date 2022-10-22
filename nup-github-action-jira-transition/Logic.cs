@@ -46,7 +46,6 @@ public class Logic
             var tasks = jiraIssues.Select(async x => await _jiraAbstraction.TransistionIssue(x.Key,_githubContext.BaseRef.ToLowerInvariant() == "main"?_options.main_jira_transition:_options.release_jira_transition)).ToList();
 
             Task.WaitAll(tasks.ToArray());
-            _logger.LogInformation($"Should get jira IDs from git");
         }
     }
 
