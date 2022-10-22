@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DotNet.GitHubAction.JiraLogic;
+using Newtonsoft.Json;
 
 namespace DotNet.GitHubAction;
 
@@ -6,7 +7,7 @@ public class Logic
 {
     private readonly ILogger _logger;
 
-    public Logic(ILogger logger)
+    public Logic(ILogger logger, JiraAbstraction jiraAbstraction)
     {
         _logger = logger;
     }

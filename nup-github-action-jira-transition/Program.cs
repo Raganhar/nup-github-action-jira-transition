@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DotNet.GitHubAction.JiraLogic;
+using Newtonsoft.Json;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     // .ConfigureServices((_, services) => services.AddGitHubActionServices())
@@ -23,7 +24,7 @@ parser.WithNotParsed(
 
 await parser.WithParsedAsync(options =>
 {
-    new Logic(logger).DoDaThing(options);
+    new Logic(logger, new JiraAbstraction(options.JiraUrl,options.JiraUser,options.JiraApiKey)).DoDaThing(options);
     Task.Delay(1000);
     return Task.CompletedTask;
 });

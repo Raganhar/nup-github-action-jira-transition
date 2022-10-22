@@ -8,21 +8,29 @@ public class ActionInputs
     public ActionInputs()
     {
         if (Environment.GetEnvironmentVariable(
-            "GREETINGS") is { Length: > 0 } greetings)
+                "GREETINGS") is { Length: > 0 } greetings)
         {
             Console.WriteLine(greetings);
         }
     }
 
-    [Option('t',"text",
-        HelpText = "sample text")]
-    public string Text { get; set; }
-    
+    [Option('u', "jira-url", HelpText = "sample text")]
+    public string JiraUrl { get; set; }
 
-    [Option('f',"from",
+    [Option('j', "jira-user", HelpText = "sample text")]
+    public string JiraUser { get; set; }
+
+    [Option('a', "jira-api-key", HelpText = "sample text")]
+    public string JiraApiKey { get; set; }
+
+    [Option('t', "text", HelpText = "sample text")]
+    public string Text { get; set; }
+
+
+    [Option('f', "from",
         HelpText = "Source fx string or commits")]
     public string From { get; set; }
-    
+
     [Option('o', "owner",
         Required = true,
         HelpText = "The owner, for example: \"dotnet\". Assign from `github.repository_owner`.")]
