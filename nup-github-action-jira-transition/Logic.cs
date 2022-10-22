@@ -43,7 +43,7 @@ public class Logic
             var jiraIssues = await _jiraAbstraction.findJiraIssues(ids.ToArray());
             _logger.LogInformation($"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues.Select(x=>x.Key),Formatting.Indented)}");
             // transistion
-            var tasks = jiraIssues.Select(async x => await _jiraAbstraction.TransistionIssue(x.Key,"in progress")).ToList();
+            var tasks = jiraIssues.Select(async x => await _jiraAbstraction.TransistionIssue(x.Key,_githubContext.BaseRef.ToLowerInvariant() == "main"?_options.main_jira_transition:_options.release_jira_transition)).ToList();
 
             Task.WaitAll(tasks.ToArray());
             _logger.LogInformation($"Should get jira IDs from git");

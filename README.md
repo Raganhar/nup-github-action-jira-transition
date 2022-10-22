@@ -25,6 +25,8 @@ This sample is written in C# and targets .NET 6. It requires the [.NET 6.0 SDK](
 
 To download and run the sample, follow these steps:
 
+
+
 1. Download and unzip the sample.
 2. In Visual Studio (2022 or later):
     1. On the menu bar, choose **File** > **Open** > **Project/Solution**.
@@ -37,6 +39,8 @@ To download and run the sample, follow these steps:
 ## More information
 
 - <https://docs.microsoft.com/dotnet/devops/create-dotnet-github-action>
+
+
 
 
 

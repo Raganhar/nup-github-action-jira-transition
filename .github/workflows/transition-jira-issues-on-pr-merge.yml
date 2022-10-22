@@ -1,4 +1,4 @@
-name: do-stuff
+name: transition-jira-issues-on-pr-merge
 
 on:
   # push:
@@ -7,6 +7,9 @@ on:
   pull_request_target:
       types:
       - closed
+      branches:
+      - main
+      - release
   workflow_dispatch:
     inputs:
       reason:
@@ -15,26 +18,28 @@ on:
         default: 'Force do stuff'
 
 jobs:
-  run-fancy-thing:
+  transition-jira-issues-on-pr-merge:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
+      # - name: Dump GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+      #   run: |
+      #     echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v3
       - name: do the thing
         id: fancy-things
         uses: Raganhar/nup-github-action-jira-transition@main
         env:
-          GREETINGS: 'Hello, .NET developers!' # ${{ secrets.GITHUB_TOKEN }}
+          # GREETINGS: 'Hello, .NET developers!' # ${{ secrets.GITHUB_TOKEN }}
           GITHUB_CONTEXT: "${{ toJson(github) }}"
         with:
-          from: text
-          text: NIC-6 | will search in branch name
+          # from: text
+          # text: NIC-6 | will search in branch name
           jira-api-key: ${{ secrets.JIRA_API_TOKEN }}
           jira-url: ${{ secrets.JIRA_BASE_URL }}
           jira-user: ${{ secrets.JIRA_USER_EMAIL }}
+          main-jira-transition: done
+          release-jira-transition: in progress

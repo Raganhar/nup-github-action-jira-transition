@@ -4,22 +4,12 @@ branding:
   icon: sliders
   color: purple
 inputs:
-  owner:
-    description: 'The owner of the repo. Assign from github.repository_owner. Example, "dotnet".'
+  main-jira-transition:
+    description: 'Transition to be used when merging PRs into main'
     required: true
-  name:
-    description: 'The repository name. Example, "samples".'
-    required: true
-  branch:
-    description: 'The branch name. Assign from github.ref. Example, "refs/heads/main".'
-    required: true
-  dir:
-    description: 'The root directory to work from. Example, "path/to/code".'
-    required: true
-  workspace:
-    description: 'The workspace directory.'
+  release-jira-transition:
+    description: 'Transition to be used when merging PRs into release'
     required: false
-    default: '/github/workspace'
   from:
     description: 'Where to search for jira tickets'
     required: false
@@ -35,9 +25,6 @@ inputs:
   text:
     description: 'Sample text to search'
     required: false
-  github-token:
-    description: 'Sample text to search'
-    required: true
 outputs:
   summary-title:
     description: 'The title of the code metrics action.'
@@ -67,5 +54,9 @@ runs:
   - ${{ inputs.jira-url }}
   - '--jira-user'
   - ${{ inputs.jira-user }}
-  - '--jira-api-key'  
+  - '--jira-api-key'
   - ${{ inputs.jira-api-key }}
+  - '--main-jira-transition'
+  - ${{ inputs.main-jira-transition }}
+  - '--release-jira-transition'
+  - ${{ inputs.release-jira-transition }}
