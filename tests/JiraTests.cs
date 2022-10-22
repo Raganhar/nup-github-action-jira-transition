@@ -1,6 +1,7 @@
 ﻿using Atlassian.Jira;
 using DotNet.GitHubAction.JiraLogic;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -57,6 +58,6 @@ public class JiraTests
         // var jiraUser = "januspeis@gmail.com";
         var credentials = Utils.GetCredentials();
         _client = Jira.CreateRestClient(credentials.jiraUrl, credentials.JiraUser, credentials.JiraToken);
-        _jiraAbstraction = new JiraAbstraction(credentials.jiraUrl, credentials.JiraUser, credentials.JiraToken);
+        _jiraAbstraction = new JiraAbstraction(NSubstitute.Substitute.For<ILogger>(),credentials.jiraUrl, credentials.JiraUser, credentials.JiraToken);
     }
 }
