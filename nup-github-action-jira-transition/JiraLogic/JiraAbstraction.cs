@@ -28,13 +28,17 @@ public class JiraAbstraction
 
     public async Task TransistionIssue(string issueKey, string transistion)
     {
-        var jiraIssues = (await findJiraIssues(issueKey)).First();
-        var tra = await Transistions(jiraIssues.Key);
+        var issue = (await findJiraIssues(issueKey)).First();
+        var tra = await Transistions(issue.Key);
         var issueTransition = tra.First(x=>x.Name.ToLowerInvariant() == transistion.ToLowerInvariant());
-        await _jirClient.Issues.ExecuteWorkflowActionAsync(jiraIssues.Value, issueTransition.Name,new WorkflowTransitionUpdates
+        if (issue.Value.Status.Name.ToLowerInvariant() == issueTransition.Name.ToLowerInvariant())
+        {
+            return;
+        }
+        await _jirClient.Issues.ExecuteWorkflowActionAsync(issue.Value, issueTransition.Name,new WorkflowTransitionUpdates
         {
             Comment = "no idea comment"
         });
-        await AddComment(issueKey,$"Transitioned ticket from {jiraIssues.Value.Status} to {issueTransition.Name} due to X");
+        await AddComment(issueKey,$"Transitioned ticket from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to X");
     }
 }

@@ -9,7 +9,7 @@ namespace tests;
 public class GithubFlow
 {
     [Test]
-    public async Task NAME_Test()
+    public async Task Full_flow_Test()
     {
         var context =JsonConvert.DeserializeObject<GithubActionContext_pullrequest>(File.ReadAllText("ExampleContexts/Pull_request_ExampleContext.json"));
         var credentials = Utils.GetCredentials();
