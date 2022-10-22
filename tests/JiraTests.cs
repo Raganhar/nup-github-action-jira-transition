@@ -51,7 +51,7 @@ public class JiraTests
     public void setup()
     {
         _issueKey = "BOB-1";
-        var apikey = "TFtapYIXwmrOWQMsj5CJ10BB";
+        var apikey = "0seqilDTQuG6ihm93AvcCD9A";
         var jiraurl = "https://trial-janus.atlassian.net/";
         var jiraUser = "januspeis@gmail.com";
         _client = Jira.CreateRestClient(jiraurl, jiraUser, apikey);
