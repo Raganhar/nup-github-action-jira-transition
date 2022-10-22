@@ -18,4 +18,10 @@
       <ProjectReference Include="..\nup-github-action-jira-transition\nup-github-action-jira-transition.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Credentials.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>
