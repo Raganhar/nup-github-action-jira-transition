@@ -23,7 +23,7 @@
       <None Update="Credentials.txt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="ExampleContexts\ExampleContext.json">
+      <None Update="ExampleContexts\Push_ExampleContext.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
