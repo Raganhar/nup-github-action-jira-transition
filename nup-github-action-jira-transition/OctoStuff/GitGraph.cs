@@ -7,7 +7,7 @@ namespace DotNet.GitHubAction.OctoStuff;
 
 public class GitGraph
 {
-    public async Task listCommitMessagesInPullRequest(string repoowner,string github_token, string repo, int prnumber, string after)
+    public async Task<List<CommitMessageInfo>> listCommitMessagesInPullRequest(string repoowner,string github_token, string repo, int prnumber, string after)
     {
         var connection = new Connection(new ProductHeaderValue("bob"), github_token);
 
@@ -15,15 +15,15 @@ public class GitGraph
             .RepositoryOwner(repoowner).Repository(repo).PullRequest(prnumber)
             .Commits(100, after)
             .Nodes
-            .Select(x => new
+            .Select(x => new CommitMessageInfo()
             {
                 Name = x.Commit.Message,
-                BaseRef = x.PullRequest.BaseRefName,
-                HeadRef = x.PullRequest.HeadRefName,
+                BaseRefName = x.PullRequest.BaseRefName,
+                HeadRefName = x.PullRequest.HeadRefName,
             });
 
         var res = await connection.Run(query);
-        Console.WriteLine(JsonConvert.SerializeObject(res,Formatting.Indented));
+        return res.ToList();
     }
     
     public async Task doStuff(string repoowner,string github_token)
@@ -47,5 +47,12 @@ public class GitGraph
 
         var res = await connection.Run(query);
         Console.WriteLine(JsonConvert.SerializeObject(res,Formatting.Indented));
+    }
+
+    public class CommitMessageInfo
+    {
+        public string Name { get; set; }
+        public string BaseRefName { get; set; }
+        public string HeadRefName { get; set; }
     }
 }
