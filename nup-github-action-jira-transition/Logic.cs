@@ -23,7 +23,7 @@ public class Logic
         _gitGraph = new GitGraph(contextPush.RepositoryOwner, contextPush.Token,contextPush.Repository);
     }
 
-    public void DoDaThing()
+    public async Task DoDaThing()
     {
         if (_options.From =="text")
         {
@@ -32,11 +32,11 @@ public class Logic
         }
         else
         {
-            // _gitGraph.listCommitMessagesInPullRequest(_contextPush.Event.PullRequest.)
+            var msgs = await _gitGraph.listCommitMessagesInPullRequest((int)_contextPush.Event.Number, "");
             // find ids
             // find ids in jira
             // transistion
-            _logger.LogInformation($"Should get jira IDs from git");   
+            _logger.LogInformation($"Should get jira IDs from git");
         }
     }
 }

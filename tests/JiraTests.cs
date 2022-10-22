@@ -52,10 +52,11 @@ public class JiraTests
     public void setup()
     {
         _issueKey = "BOB-1";
-        var apikey = "YWzNOZgmLsAI6YCnJukl80D9";
-        var jiraurl = "https://trial-janus.atlassian.net/";
-        var jiraUser = "januspeis@gmail.com";
-        _client = Jira.CreateRestClient(jiraurl, jiraUser, apikey);
-        _jiraAbstraction = new JiraAbstraction(jiraurl, jiraUser, apikey);
+        // var apikey = "YWzNOZgmLsAI6YCnJukl80D9";
+        // var jiraurl = "https://trial-janus.atlassian.net/";
+        // var jiraUser = "januspeis@gmail.com";
+        var credentials = Utils.GetCredentials();
+        _client = Jira.CreateRestClient(credentials.jiraUrl, credentials.JiraUser, credentials.JiraToken);
+        _jiraAbstraction = new JiraAbstraction(credentials.jiraUrl, credentials.JiraUser, credentials.JiraToken);
     }
 }
