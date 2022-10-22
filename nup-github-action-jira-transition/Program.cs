@@ -28,7 +28,7 @@ await parser.WithParsedAsync(options =>
 {
     logger.LogInformation($"hello");
     var environmentVariable = Environment.GetEnvironmentVariable("GITHUB_CONTEXT");
-    var context = JsonConvert.DeserializeObject<GithubActionContext_push>(environmentVariable);
+    var context = JsonConvert.DeserializeObject<GithubActionContext_pullrequest>(environmentVariable);
     logger.LogInformation($"options: {JsonConvert.SerializeObject(options, Formatting.Indented)}");
 
     new Logic(logger, options, context).DoDaThing();

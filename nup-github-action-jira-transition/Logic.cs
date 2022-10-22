@@ -9,11 +9,11 @@ public class Logic
 {
     private readonly ILogger _logger;
     private readonly ActionInputs _options;
-    private readonly GithubActionContext_push _contextPush;
+    private readonly GithubActionContext_pullrequest _contextPush;
     private JiraAbstraction _jiraAbstraction;
     private GitGraph _gitGraph;
 
-    public Logic(ILogger logger, ActionInputs options, GithubActionContext_push contextPush)
+    public Logic(ILogger logger, ActionInputs options, GithubActionContext_pullrequest? contextPush)
     {
         _logger = logger;
         _options = options;
@@ -32,7 +32,7 @@ public class Logic
         }
         else
         {
-            // _gitGraph.listCommitMessagesInPullRequest(_context.Event.)
+            _gitGraph.listCommitMessagesInPullRequest(_contextPush.Event.PullRequest.)
             // find ids
             // find ids in jira
             // transistion

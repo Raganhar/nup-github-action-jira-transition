@@ -11,7 +11,7 @@ public class GithubFlow
     [Test]
     public void NAME_Test()
     {
-        var context =JsonConvert.DeserializeObject<GithubActionContext_push>(File.ReadAllText("Push_ExampleContext.json"));
+        var context =JsonConvert.DeserializeObject<GithubActionContext_pullrequest>(File.ReadAllText("Pull_request_ExampleContext.json"));
         var options = new ActionInputs
         {
           From  = MagicStrings.text+"asd"
