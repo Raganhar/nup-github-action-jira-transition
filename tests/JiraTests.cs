@@ -52,7 +52,7 @@ public class JiraTests
     public void setup()
     {
         _issueKey = "BOB-1";
-        var apikey = "ir0QjIR9YzUS9lb4wb4qB0BE";
+        var apikey = "YWzNOZgmLsAI6YCnJukl80D9";
         var jiraurl = "https://trial-janus.atlassian.net/";
         var jiraUser = "januspeis@gmail.com";
         _client = Jira.CreateRestClient(jiraurl, jiraUser, apikey);
