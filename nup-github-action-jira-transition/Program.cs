@@ -24,16 +24,12 @@ parser.WithNotParsed(
         Environment.Exit(2);
     });
 
-await parser.WithParsedAsync(options =>
+await parser.WithParsedAsync(async options =>
 {
-    logger.LogInformation($"hello");
     var environmentVariable = Environment.GetEnvironmentVariable("GITHUB_CONTEXT");
     var context = JsonConvert.DeserializeObject<GithubActionContext_pullrequest>(environmentVariable);
-    logger.LogInformation($"options: {JsonConvert.SerializeObject(options, Formatting.Indented)}");
 
-    new Logic(logger, options, context).DoDaThing();
-    Task.Delay(10000);
-    return Task.CompletedTask;
+    await new Logic(logger, options, context).DoDaThing();
 });
 Environment.Exit(0);
 await host.RunAsync();

@@ -20,7 +20,7 @@ public class Logic
         _options = options;
         _githubContext = githubContext;
 
-        _jiraAbstraction = new JiraAbstraction(options.JiraUrl, options.JiraUser, options.JiraApiKey);
+        _jiraAbstraction = new JiraAbstraction(_logger,options.JiraUrl, options.JiraUser, options.JiraApiKey);
         _gitGraph = new GitGraph(githubContext.RepositoryOwner, githubContext.Token,
             githubContext.Repository.Split("/").Last());
     }
