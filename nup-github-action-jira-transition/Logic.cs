@@ -35,13 +35,13 @@ public class Logic
         else
         {
             var msgs = await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "");
-            
+            _logger.LogInformation($"Found the following commit messages: {JsonConvert.SerializeObject(msgs,Formatting.Indented)}");
             // find ids
             var ids = FindIssueKeys(msgs);
             _logger.LogInformation($"Found the following Ids in commit messages: {JsonConvert.SerializeObject(ids,Formatting.Indented)}");
             // find ids in jira
             var jiraIssues = await _jiraAbstraction.findJiraIssues(ids.ToArray());
-            _logger.LogInformation($"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues,Formatting.Indented)}");
+            _logger.LogInformation($"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues.Select(x=>x.Key),Formatting.Indented)}");
             // transistion
             var tasks = jiraIssues.Select(async x => await _jiraAbstraction.TransistionIssue(x.Key,"in progress")).ToList();
 
