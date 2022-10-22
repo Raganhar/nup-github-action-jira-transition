@@ -16,17 +16,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
+      # - name: Dump GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+      #   run: |
+      #     echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v3
       - name: do the thing
         id: fancy-things
         uses: Raganhar/nup-github-action-jira-transition@main
         env:
           GREETINGS: 'Hello, .NET developers!' # ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_CONTEXT: ${{ toJson(github) }}
         with:
           owner: ${{ github.repository_owner }}
           name: ${{ github.repository }}
