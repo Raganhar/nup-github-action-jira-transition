@@ -23,13 +23,14 @@ parser.WithNotParsed(
         
         Environment.Exit(2);
     });
-
+var done = false;
 await parser.WithParsedAsync(async options =>
 {
     var environmentVariable = Environment.GetEnvironmentVariable("GITHUB_CONTEXT");
     var context = JsonConvert.DeserializeObject<GithubActionContext_pullrequest>(environmentVariable);
 
     await new Logic(logger, options, context).DoDaThing();
+    done = true;
 });
+logger.LogInformation($"Done: {done}");
 Environment.Exit(0);
-await host.RunAsync();
