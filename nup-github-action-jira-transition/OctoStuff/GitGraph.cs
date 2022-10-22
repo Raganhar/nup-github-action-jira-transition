@@ -27,7 +27,7 @@ public class GitGraph
             .Nodes
             .Select(x => new CommitMessageInfo()
             {
-                Name = x.Commit.Message,
+                Message = x.Commit.Message,
                 BaseRefName = x.PullRequest.BaseRefName,
                 HeadRefName = x.PullRequest.HeadRefName,
             });
@@ -61,7 +61,7 @@ public class GitGraph
 
     public class CommitMessageInfo
     {
-        public string Name { get; set; }
+        public string Message { get; set; }
         public string BaseRefName { get; set; }
         public string HeadRefName { get; set; }
     }

@@ -21,7 +21,7 @@
 
     <ItemGroup>
       <None Update="Credentials.txt">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="ExampleContexts\Push_ExampleContext.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>

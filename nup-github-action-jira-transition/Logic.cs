@@ -20,7 +20,7 @@ public class Logic
         _contextPush = contextPush;
 
         _jiraAbstraction = new JiraAbstraction(options.JiraUrl,options.JiraUser,options.JiraApiKey);
-        _gitGraph = new GitGraph(contextPush.RepositoryOwner, contextPush.Token,contextPush.Repository);
+        _gitGraph = new GitGraph(contextPush.RepositoryOwner, contextPush.Token,contextPush.Repository.Split("/").Last());
     }
 
     public async Task DoDaThing()
@@ -33,6 +33,9 @@ public class Logic
         else
         {
             var msgs = await _gitGraph.listCommitMessagesInPullRequest((int)_contextPush.Event.Number, "");
+            // Console.WriteLine(JsonConvert.SerializeObject(msgs,Formatting.Indented));
+            var ids = msgs.SelectMany(x=>JiraIssueStringSearcher.FindIds(x.Message));
+            Console.WriteLine(JsonConvert.SerializeObject(ids,Formatting.Indented));
             // find ids
             // find ids in jira
             // transistion

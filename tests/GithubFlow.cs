@@ -9,10 +9,11 @@ namespace tests;
 public class GithubFlow
 {
     [Test]
-    public void NAME_Test()
+    public async Task NAME_Test()
     {
         var context =JsonConvert.DeserializeObject<GithubActionContext_pullrequest>(File.ReadAllText("ExampleContexts/Pull_request_ExampleContext.json"));
         var credentials = Utils.GetCredentials();
+        context.Token = credentials.githubToken;
         var options = new ActionInputs
         {
           From  = MagicStrings.text+"asd",
@@ -22,6 +23,6 @@ public class GithubFlow
         };
         var logic = new Logic(NSubstitute.Substitute.For<ILogger>(), options, context);
         
-        logic.DoDaThing();
+        await logic.DoDaThing();
     }
 }
