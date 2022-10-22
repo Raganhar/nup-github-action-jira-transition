@@ -49,17 +49,17 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-  - '-o'
-  - ${{ inputs.owner }}
-  - '-n'
-  - ${{ inputs.name }}
-  - '-b'
-  - ${{ inputs.branch }}
-  - '-d'
-  - ${{ inputs.dir }}
-  - '-w'
-  - ${{ inputs.workspace }}
-  - '-f'
+#  - '-o'
+#  - ${{ inputs.owner }}
+#  - '-n'
+#  - ${{ inputs.name }}
+#  - '-b'
+#  - ${{ inputs.branch }}
+#  - '-d'
+#  - ${{ inputs.dir }}
+#  - '-w'
+#  - ${{ inputs.workspace }}
+#  - '-f'
   - ${{ inputs.from }}
   - '-t'
   - ${{ inputs.text }}
@@ -69,5 +69,3 @@ runs:
   - ${{ inputs.jira-user }}
   - '--jira-api-key'  
   - ${{ inputs.jira-api-key }}
-  - '--github-token'
-  - ${{ inputs.github-token }}
