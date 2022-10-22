@@ -5,6 +5,8 @@ on:
   #   branches: [ main ]
   # pull_request:
   pull_request_target:
+      types:
+      - closed
   workflow_dispatch:
     inputs:
       reason:
@@ -14,7 +16,7 @@ on:
 
 jobs:
   run-fancy-thing:
-
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
