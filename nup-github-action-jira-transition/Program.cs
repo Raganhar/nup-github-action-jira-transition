@@ -25,11 +25,12 @@ parser.WithNotParsed(
 
 await parser.WithParsedAsync(options =>
 {
+    logger.LogInformation($"hello");     
     logger.LogInformation($"options: {JsonConvert.SerializeObject(options, Formatting.Indented)}");     
     // var jiraAbstraction = new JiraAbstraction(options.JiraUrl,options.JiraUser,options.JiraApiKey);
     // var gitGraph = new GitGraph(options.Owner, options.github_token,options.re);
     // new Logic(logger, jiraAbstraction, gitGraph).DoDaThing(options);
-    Task.Delay(1000);
+    Task.Delay(5000);
     return Task.CompletedTask;
 });
 Environment.Exit(0);
