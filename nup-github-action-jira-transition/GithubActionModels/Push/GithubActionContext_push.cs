@@ -3,7 +3,7 @@ using Newtonsoft.Json.Converters;
 
 namespace DotNet.GitHubAction.GithubActionModels;
 
-public partial class GithubActionContext
+public partial class GithubActionContext_push
 {
     [JsonProperty("token")] public string Token { get; set; }
 

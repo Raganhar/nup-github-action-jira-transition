@@ -9,18 +9,18 @@ public class Logic
 {
     private readonly ILogger _logger;
     private readonly ActionInputs _options;
-    private readonly GithubActionContext _context;
+    private readonly GithubActionContext_push _contextPush;
     private JiraAbstraction _jiraAbstraction;
     private GitGraph _gitGraph;
 
-    public Logic(ILogger logger, ActionInputs options, GithubActionContext context)
+    public Logic(ILogger logger, ActionInputs options, GithubActionContext_push contextPush)
     {
         _logger = logger;
         _options = options;
-        _context = context;
+        _contextPush = contextPush;
 
         _jiraAbstraction = new JiraAbstraction(options.JiraUrl,options.JiraUser,options.JiraApiKey);
-        _gitGraph = new GitGraph(context.RepositoryOwner, context.Token,context.Repository);
+        _gitGraph = new GitGraph(contextPush.RepositoryOwner, contextPush.Token,contextPush.Repository);
     }
 
     public void DoDaThing()

@@ -1,0 +1,138 @@
+﻿{
+  "token": "***",
+  "job": "run-fancy-thing",
+  "ref": "refs/pull/1/merge",
+  "sha": "9b2dbd8753ad291d2b029d938c4218e75ccbb23a",
+  "repository": "Raganhar/nup-github-action-jira-transition",
+  "repository_owner": "Raganhar",
+  "repository_owner_id": "4292545",
+  "repositoryUrl": "git://github.com/Raganhar/nup-github-action-jira-transition.git",
+  "run_id": "3303167058",
+  "run_number": "42",
+  "retention_days": "90",
+  "run_attempt": "1",
+  "artifact_cache_size_limit": "10",
+  "repository_visibility": "public",
+  "repository_id": "555582813",
+  "actor_id": "4292545",
+  "actor": "Raganhar",
+  "triggering_actor": "Raganhar",
+  "workflow": "do-stuff",
+  "head_ref": "pr-branch",
+  "base_ref": "main",
+  "event_name": "pull_request",
+  "event": {
+    "action": "synchronize",
+    "after": "f4aef75436b077f31ea95cca6b4d54001800b71d",
+    "before": "208abd81420e7070ee7bb98370cb992ef20c1ca2",
+    "number": 1,
+    "pull_request": {
+      "_links": {
+        "comments": {
+          "href": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/issues/1/comments"
+        },
+        "commits": {
+          "href": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/pulls/1/commits"
+        },
+        "html": {
+          "href": "https://github.com/Raganhar/nup-github-action-jira-transition/pull/1"
+        },
+        "issue": {
+          "href": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/issues/1"
+        },
+        "review_comment": {
+          "href": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/pulls/comments{/number}"
+        },
+        "review_comments": {
+          "href": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/pulls/1/comments"
+        },
+        "self": {
+          "href": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/pulls/1"
+        },
+        "statuses": {
+          "href": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/statuses/f4aef75436b077f31ea95cca6b4d54001800b71d"
+        }
+      },
+      "active_lock_reason": null,
+      "additions": 100,
+      "milestones_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/milestones{/number}",
+      "mirror_url": null,
+      "name": "nup-github-action-jira-transition",
+      "node_id": "R_kgDOIR2FXQ",
+      "notifications_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/notifications{?since,all,participating}",
+      "open_issues": 1,
+      "open_issues_count": 1,
+      "owner": {
+        "avatar_url": "https://avatars.githubusercontent.com/u/4292545?v=4",
+        "events_url": "https://api.github.com/users/Raganhar/events{/privacy}",
+        "followers_url": "https://api.github.com/users/Raganhar/followers",
+        "following_url": "https://api.github.com/users/Raganhar/following{/other_user}",
+        "gists_url": "https://api.github.com/users/Raganhar/gists{/gist_id}",
+        "gravatar_id": "",
+        "html_url": "https://github.com/Raganhar",
+        "id": 4292545,
+        "login": "Raganhar",
+        "node_id": "MDQ6VXNlcjQyOTI1NDU=",
+        "organizations_url": "https://api.github.com/users/Raganhar/orgs",
+        "received_events_url": "https://api.github.com/users/Raganhar/received_events",
+        "repos_url": "https://api.github.com/users/Raganhar/repos",
+        "site_admin": false,
+        "starred_url": "https://api.github.com/users/Raganhar/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/Raganhar/subscriptions",
+        "type": "User",
+        "url": "https://api.github.com/users/Raganhar"
+      },
+      "private": false,
+      "pulls_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/pulls{/number}",
+      "pushed_at": "2022-10-22T11:56:25Z",
+      "releases_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/releases{/id}",
+      "size": 125,
+      "ssh_url": "git@github.com:Raganhar/nup-github-action-jira-transition.git",
+      "stargazers_count": 0,
+      "stargazers_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/stargazers",
+      "statuses_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/statuses/{sha}",
+      "subscribers_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/subscribers",
+      "subscription_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/subscription",
+      "svn_url": "https://github.com/Raganhar/nup-github-action-jira-transition",
+      "tags_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/tags",
+      "teams_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/teams",
+      "topics": [],
+      "trees_url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition/git/trees{/sha}",
+      "updated_at": "2022-10-21T22:00:24Z",
+      "url": "https://api.github.com/repos/Raganhar/nup-github-action-jira-transition",
+      "visibility": "public",
+      "watchers": 0,
+      "watchers_count": 0,
+      "web_commit_signoff_required": false
+    },
+    "sender": {
+      "avatar_url": "https://avatars.githubusercontent.com/u/4292545?v=4",
+      "events_url": "https://api.github.com/users/Raganhar/events{/privacy}",
+      "followers_url": "https://api.github.com/users/Raganhar/followers",
+      "following_url": "https://api.github.com/users/Raganhar/following{/other_user}",
+      "gists_url": "https://api.github.com/users/Raganhar/gists{/gist_id}",
+      "gravatar_id": "",
+      "html_url": "https://github.com/Raganhar",
+      "id": 4292545,
+      "login": "Raganhar",
+      "node_id": "MDQ6VXNlcjQyOTI1NDU=",
+      "organizations_url": "https://api.github.com/users/Raganhar/orgs",
+      "received_events_url": "https://api.github.com/users/Raganhar/received_events",
+      "repos_url": "https://api.github.com/users/Raganhar/repos",
+      "site_admin": false,
+      "starred_url": "https://api.github.com/users/Raganhar/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/Raganhar/subscriptions",
+      "type": "User",
+      "url": "https://api.github.com/users/Raganhar"
+    }
+  },
+  "server_url": "https://github.com",
+  "api_url": "https://api.github.com",
+  "graphql_url": "https://api.github.com/graphql",
+  "ref_name": "1/merge",
+  "ref_protected": false,
+  "ref_type": "branch",
+  "secret_source": "Actions",
+  "workspace": "/home/runner/work/nup-github-action-jira-transition/nup-github-action-jira-transition",
+  "action": "__run"
+}
