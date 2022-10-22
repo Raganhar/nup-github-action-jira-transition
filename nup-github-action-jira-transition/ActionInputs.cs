@@ -13,13 +13,11 @@ public class ActionInputs
             Console.WriteLine(greetings);
         }
     }
-
-    // [Option("event_path", HelpText = "sample text")]
-    // public string event_path { get; set; }
-    //
-    // [Option("github-token", HelpText = "sample text")]
-    // public string github_token { get; set; }
     
+    [Option("main-jira-transition", HelpText = "sample text")]
+    public string main_jira_transition { get; set; }
+    [Option("release-jira-transition", HelpText = "sample text")]
+    public string release_jira_transition { get; set; }
     [Option("jira-url", HelpText = "sample text")]
     public string JiraUrl { get; set; }
 

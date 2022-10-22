@@ -38,3 +38,5 @@ jobs:
           jira-api-key: ${{ secrets.JIRA_API_TOKEN }}
           jira-url: ${{ secrets.JIRA_BASE_URL }}
           jira-user: ${{ secrets.JIRA_USER_EMAIL }}
+          main-jira-transition: in progress
+          release-jira-transition: done
