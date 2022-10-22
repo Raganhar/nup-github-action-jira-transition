@@ -41,7 +41,7 @@ public class JiraAbstraction
         {
             Comment = "no idea comment"
         });
-        var comment = $"Transitioned ticket from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to X";
+        var comment = $"Transitioned ticket from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to PR being merged";
         await AddComment(issueKey,comment);
         _logger.LogInformation(comment);
     }
