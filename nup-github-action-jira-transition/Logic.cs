@@ -32,7 +32,7 @@ public class Logic
         }
         else
         {
-            _gitGraph.listCommitMessagesInPullRequest(_context.Event.)
+            // _gitGraph.listCommitMessagesInPullRequest(_context.Event.)
             // find ids
             // find ids in jira
             // transistion
