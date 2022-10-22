@@ -9,8 +9,9 @@ public class JiraIssueStringSearcher
 
     public static List<string> FindIds(string text)
     {
-        var matches = new Regex(issueIdRegex).Match(text);
+        text = text.ReplaceLineEndings(" ");
+        var matches = new Regex(issueIdRegex).Matches(text);
 
-        return matches.Groups.Values.Select(x => x.Value).Distinct().ToList();
+        return matches.Select(c=>c.Value).Distinct().ToList();
     }
 }

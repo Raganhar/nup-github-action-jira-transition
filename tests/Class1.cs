@@ -14,4 +14,12 @@ public class Class1
         findIds.Count.Should().Be(1);
         findIds.Should().Contain(expected);
     }
+    [Test]
+    public void Multi_keys_Test()
+    {
+        var findIds = JiraIssueStringSearcher.FindIds(" NIC-12 dfggdfsg BOB-5");
+        findIds.Count.Should().Be(2);
+        findIds.Should().Contain("NIC-12");
+        findIds.Should().Contain("BOB-5");
+    }
 }

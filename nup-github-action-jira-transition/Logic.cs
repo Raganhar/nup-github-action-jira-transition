@@ -34,7 +34,7 @@ public class Logic
         {
             var msgs = await _gitGraph.listCommitMessagesInPullRequest((int)_contextPush.Event.Number, "");
             // Console.WriteLine(JsonConvert.SerializeObject(msgs,Formatting.Indented));
-            var ids = msgs.SelectMany(x=>JiraIssueStringSearcher.FindIds(x.Message));
+            var ids = msgs.Where(c=>!string.IsNullOrWhiteSpace(c.Message)).SelectMany(x=>JiraIssueStringSearcher.FindIds(x.Message));
             Console.WriteLine(JsonConvert.SerializeObject(ids,Formatting.Indented));
             // find ids
             // find ids in jira
