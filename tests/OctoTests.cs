@@ -4,6 +4,7 @@ using NUnit.Framework;
 
 namespace tests;
 
+[Category("Integration")]
 public class OctoTests
 {
     private static GitGraph _gitGraph;

@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace tests;
 
+[Category("Integration")]
 public class GithubFlow
 {
     [Test]
