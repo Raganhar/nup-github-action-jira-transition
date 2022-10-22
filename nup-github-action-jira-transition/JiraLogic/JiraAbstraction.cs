@@ -4,10 +4,12 @@ namespace DotNet.GitHubAction.JiraLogic;
 
 public class JiraAbstraction
 {
+    private readonly ILogger _logger;
     private Jira _jirClient;
 
-    public JiraAbstraction(string jiraUrl, string jiraUserid, string jiraApiKey)
+    public JiraAbstraction(ILogger logger, string jiraUrl, string jiraUserid, string jiraApiKey)
     {
+        _logger = logger;
         _jirClient = Jira.CreateRestClient(jiraUrl,jiraUserid,jiraApiKey);
     }
 
@@ -39,6 +41,8 @@ public class JiraAbstraction
         {
             Comment = "no idea comment"
         });
-        await AddComment(issueKey,$"Transitioned ticket from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to X");
+        var comment = $"Transitioned ticket from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to X";
+        await AddComment(issueKey,comment);
+        _logger.LogInformation(comment);
     }
 }
