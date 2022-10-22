@@ -41,7 +41,7 @@ public class Logic
             _logger.LogInformation($"Found the following Ids in commit messages: {JsonConvert.SerializeObject(ids,Formatting.Indented)}");
             // find ids in jira
             var jiraIssues = await _jiraAbstraction.findJiraIssues(ids.ToArray());
-            _logger.LogInformation($"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues,Formatting.Indented)}");
+            _logger.LogInformation($"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues.Select(x=>x.Key),Formatting.Indented)}");
             // transistion
             var tasks = jiraIssues.Select(async x => await _jiraAbstraction.TransistionIssue(x.Key,"in progress")).ToList();
 
