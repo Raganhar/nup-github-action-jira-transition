@@ -14,11 +14,11 @@ public class ActionInputs
         }
     }
 
-    [Option("event_path", HelpText = "sample text")]
-    public string event_path { get; set; }
-    
-    [Option("github-token", HelpText = "sample text")]
-    public string github_token { get; set; }
+    // [Option("event_path", HelpText = "sample text")]
+    // public string event_path { get; set; }
+    //
+    // [Option("github-token", HelpText = "sample text")]
+    // public string github_token { get; set; }
     
     [Option("jira-url", HelpText = "sample text")]
     public string JiraUrl { get; set; }
@@ -37,38 +37,38 @@ public class ActionInputs
         HelpText = "Source fx string or commits")]
     public string From { get; set; }
 
-    [Option('o', "owner",
-        Required = true,
-        HelpText = "The owner, for example: \"dotnet\". Assign from `github.repository_owner`.")]
-    public string Owner { get; set; } = null!;
-
-    [Option('n', "name",
-        Required = true,
-        HelpText = "The repository name, for example: \"samples\". Assign from `github.repository`.")]
-    public string Name
-    {
-        get => _repositoryName;
-        set => ParseAndAssign(value, str => _repositoryName = str);
-    }
-
-    [Option('b', "branch",
-        Required = true,
-        HelpText = "The branch name, for example: \"refs/heads/main\". Assign from `github.ref`.")]
-    public string Branch
-    {
-        get => _branchName;
-        set => ParseAndAssign(value, str => _branchName = str);
-    }
-
-    [Option('d', "dir",
-        Required = true,
-        HelpText = "The root directory to start recursive searching from.")]
-    public string Directory { get; set; } = null!;
-
-    [Option('w', "workspace",
-        Required = true,
-        HelpText = "The workspace directory, or repository root directory.")]
-    public string WorkspaceDirectory { get; set; } = null!;
+    // [Option('o', "owner",
+    //     Required = true,
+    //     HelpText = "The owner, for example: \"dotnet\". Assign from `github.repository_owner`.")]
+    // public string Owner { get; set; } = null!;
+    //
+    // [Option('n', "name",
+    //     Required = true,
+    //     HelpText = "The repository name, for example: \"samples\". Assign from `github.repository`.")]
+    // public string Name
+    // {
+    //     get => _repositoryName;
+    //     set => ParseAndAssign(value, str => _repositoryName = str);
+    // }
+    //
+    // [Option('b', "branch",
+    //     Required = true,
+    //     HelpText = "The branch name, for example: \"refs/heads/main\". Assign from `github.ref`.")]
+    // public string Branch
+    // {
+    //     get => _branchName;
+    //     set => ParseAndAssign(value, str => _branchName = str);
+    // }
+    //
+    // [Option('d', "dir",
+    //     Required = true,
+    //     HelpText = "The root directory to start recursive searching from.")]
+    // public string Directory { get; set; } = null!;
+    //
+    // [Option('w', "workspace",
+    //     Required = true,
+    //     HelpText = "The workspace directory, or repository root directory.")]
+    // public string WorkspaceDirectory { get; set; } = null!;
 
     static void ParseAndAssign(string? value, Action<string> assign)
     {

@@ -31,9 +31,12 @@ jobs:
           GREETINGS: 'Hello, .NET developers!' # ${{ secrets.GITHUB_TOKEN }}
           GITHUB_CONTEXT: "${{ toJson(github) }}"
         with:
-          owner: ${{ github.repository_owner }}
-          name: ${{ github.repository }}
-          branch: ${{ github.ref }}
-          dir: ${{ './github-actions/DotNet.GitHubAction' }}
+          # owner: ${{ github.repository_owner }}
+          # name: ${{ github.repository }}
+          # branch: ${{ github.ref }}
+          # dir: ${{ './github-actions/DotNet.GitHubAction' }}
           from: text
           text: NIC-6 | will search in branch name
+          jira-api-key: ${{ github.JIRA_API_TOKEN }}
+          jira-url: ${{ github.JIRA_BASE_URL }}
+          jira-user: ${{ github.JIRA_USER_EMAIL }}
