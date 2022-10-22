@@ -18,5 +18,9 @@ public class Logic
             var ids = JiraIssueStringSearcher.FindIds(options.Text);
             _logger.LogInformation($"ids found from text: {JsonConvert.SerializeObject(ids,Formatting.Indented)}");     
         }
+        else
+        {
+            _logger.LogInformation($"Should get jira IDs from git");   
+        }
     }
 }
