@@ -16,15 +16,17 @@ public class ActionInputs
 
     [Option("event_path", HelpText = "sample text")]
     public string event_path { get; set; }
+    
     [Option("github-token", HelpText = "sample text")]
     public string github_token { get; set; }
-    [Option('u', "jira-url", HelpText = "sample text")]
+    
+    [Option("jira-url", HelpText = "sample text")]
     public string JiraUrl { get; set; }
 
-    [Option('j', "jira-user", HelpText = "sample text")]
+    [Option("jira-user", HelpText = "sample text")]
     public string JiraUser { get; set; }
 
-    [Option('a', "jira-api-key", HelpText = "sample text")]
+    [Option("jira-api-key", HelpText = "sample text")]
     public string JiraApiKey { get; set; }
 
     [Option('t', "text", HelpText = "sample text")]
