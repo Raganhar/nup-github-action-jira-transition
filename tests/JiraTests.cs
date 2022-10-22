@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace tests;
 
+[Category("Integration")]
 public class JiraTests
 {
     private static Jira? _client;
@@ -51,7 +52,7 @@ public class JiraTests
     public void setup()
     {
         _issueKey = "BOB-1";
-        var apikey = "0seqilDTQuG6ihm93AvcCD9A";
+        var apikey = "ir0QjIR9YzUS9lb4wb4qB0BE";
         var jiraurl = "https://trial-janus.atlassian.net/";
         var jiraUser = "januspeis@gmail.com";
         _client = Jira.CreateRestClient(jiraurl, jiraUser, apikey);
