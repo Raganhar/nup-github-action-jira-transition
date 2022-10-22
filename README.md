@@ -37,6 +37,3 @@ To download and run the sample, follow these steps:
 - <https://docs.microsoft.com/dotnet/devops/create-dotnet-github-action>
 
 
-
-
-
