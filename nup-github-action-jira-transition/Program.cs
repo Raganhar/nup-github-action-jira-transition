@@ -1,4 +1,5 @@
-﻿using DotNet.GitHubAction.JiraLogic;
+﻿using DotNet.GitHubAction.GithubActionModels;
+using DotNet.GitHubAction.JiraLogic;
 using DotNet.GitHubAction.OctoStuff;
 using Newtonsoft.Json;
 
@@ -27,11 +28,10 @@ await parser.WithParsedAsync(options =>
 {
     logger.LogInformation($"hello");
     var environmentVariable = Environment.GetEnvironmentVariable("GITHUB_CONTEXT");
-    logger.LogInformation($"github context from environment: {environmentVariable}");
-    logger.LogInformation($"options: {JsonConvert.SerializeObject(options, Formatting.Indented)}");     
-    // var jiraAbstraction = new JiraAbstraction(options.JiraUrl,options.JiraUser,options.JiraApiKey);
-    // var gitGraph = new GitGraph(options.Owner, options.github_token,options.re);
-    // new Logic(logger, jiraAbstraction, gitGraph).DoDaThing(options);
+    var context = JsonConvert.DeserializeObject<GithubActionContext>(environmentVariable);
+    logger.LogInformation($"options: {JsonConvert.SerializeObject(options, Formatting.Indented)}");
+
+    new Logic(logger, options, context).DoDaThing();
     Task.Delay(10000);
     return Task.CompletedTask;
 });
