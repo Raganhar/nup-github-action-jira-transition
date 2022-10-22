@@ -27,7 +27,7 @@ jobs:
         uses: Raganhar/nup-github-action-jira-transition@main
         env:
           GREETINGS: 'Hello, .NET developers!' # ${{ secrets.GITHUB_TOKEN }}
-          # GITHUB_CONTEXT: ${{ toJson(github) }}
+          GITHUB_CONTEXT: "${{ toJson(github) }}"
         with:
           owner: ${{ github.repository_owner }}
           name: ${{ github.repository }}
