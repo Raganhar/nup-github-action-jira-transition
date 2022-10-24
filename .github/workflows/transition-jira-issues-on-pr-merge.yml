@@ -1,9 +1,6 @@
 name: transition-jira-issues-on-pr-merge
 
 on:
-  # push:
-  #   branches: [ main ]
-  # pull_request:
   pull_request_target:
       types:
       - closed
@@ -33,7 +30,6 @@ jobs:
         id: fancy-things
         uses: Raganhar/nup-github-action-jira-transition@main
         env:
-          # GREETINGS: 'Hello, .NET developers!' # ${{ secrets.GITHUB_TOKEN }}
           GITHUB_CONTEXT: "${{ toJson(github) }}"
         with:
           # from: text
