@@ -32,7 +32,12 @@ public class JiraAbstraction
     {
         var issue = (await findJiraIssues(issueKey)).First();
         var tra = await Transistions(issue.Key);
-        var issueTransition = tra.First(x=>x.Name.ToLowerInvariant() == transistion.ToLowerInvariant());
+        var issueTransition = tra.FirstOrDefault(x=>x.Name.ToLowerInvariant() == transistion.ToLowerInvariant());
+        if (issueTransition == null)
+        {
+            _logger.LogInformation($"Unable to transition {issueKey} to {transistion} since it doesn't exist in it's workflow");
+            return;
+        }
         if (issue.Value.Status.Name.ToLowerInvariant() == issueTransition.Name.ToLowerInvariant())
         {
             return;
