@@ -1,8 +1,10 @@
-name: transition-jira-issues-on-pr-merge
+name: transition-jira-issues-on-release-push
 
 on:
   push:
-  
+      branches:
+      - release  
+      
 jobs:
   transition-jira-issues-on-push:
     runs-on: ubuntu-latest
