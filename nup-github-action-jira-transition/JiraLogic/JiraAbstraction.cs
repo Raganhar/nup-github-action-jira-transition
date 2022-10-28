@@ -28,7 +28,7 @@ public class JiraAbstraction
         await _jirClient.Issues.AddCommentAsync(issueid, new Comment { Body = comment,Author = "AP Jira Automation"});
     }
 
-    public async Task TransistionIssue(string issueKey, string transistion)
+    public async Task TransistionIssue(string issueKey, string transistion, ExecutionContext executionContext)
     {
         var issue = (await findJiraIssues(issueKey)).First();
         var tra = await Transistions(issue.Key);
@@ -46,7 +46,8 @@ public class JiraAbstraction
         {
             Comment = "no idea comment"
         });
-        var comment = $"Transitioned ticket from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to PR being merged";
+        var executionContextExplaination = (executionContext==ExecutionContext.Push?"Branch was updated":"PR is being merged");
+        var comment = $"Transitioned ticket from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to {executionContextExplaination}";
         await AddComment(issueKey,comment);
         _logger.LogInformation(comment);
     }

@@ -37,7 +37,8 @@ public class Logic
         }
         else
         {
-            var msgs =await GetCommitMessages(_githubContext);
+            var executionContext = DeriveContext(_githubContext.EventName);
+            var msgs =await GetCommitMessages(executionContext);
             _logger.LogInformation($"Found the following commit messages: {JsonConvert.SerializeObject(msgs,Formatting.Indented)}");
             // find ids
             var ids = FindIssueKeys(msgs);
@@ -46,22 +47,36 @@ public class Logic
             var jiraIssues = await _jiraAbstraction.findJiraIssues(ids.ToArray());
             _logger.LogInformation($"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues.Select(x=>x.Key),Formatting.Indented)}");
             // transistion
-            var tasks = jiraIssues.Select(async x => await _jiraAbstraction.TransistionIssue(x.Key,_githubContext.BaseRef.ToLowerInvariant() == "main"?_options.main_jira_transition:_options.release_jira_transition)).ToList();
+            var tasks = jiraIssues.Select(async x => await _jiraAbstraction.TransistionIssue(x.Key,_githubContext.BaseRef.ToLowerInvariant() == "main"?_options.main_jira_transition:_options.release_jira_transition, executionContext)).ToList();
 
             Task.WaitAll(tasks.ToArray());
         }
     }
-    private async Task<List<string>> GetCommitMessages(GithubActionContext_pullrequest githubActionContextPullrequest)
+
+    public ExecutionContext DeriveContext(string eventName)
     {
-        var eventName = _githubContext.EventName;
         switch (eventName)
         {
-            case MagicStrings.EventNames.Push: return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "")).Select(x=>x.Message).ToList();
-            case MagicStrings.EventNames.PullRequest: return await _branchComparer.Compare(_options.branch_to_compare_to);
-                break;
+            case MagicStrings.EventNames.Push: return ExecutionContext.Push;
+            case MagicStrings.EventNames.PullRequest: return ExecutionContext.PullRequest;
             default:
             {
                 _logger.LogInformation($"No messages retrieved, due to unsupported event trigger {eventName}");
+                return ExecutionContext.Unknown;
+            }
+        }
+    }
+    
+    private async Task<List<string>> GetCommitMessages(ExecutionContext executionContext)
+    {
+        switch (executionContext)
+        {
+            case ExecutionContext.Push: return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "")).Select(x=>x.Message).ToList();
+            case ExecutionContext.PullRequest: return await _branchComparer.Compare(_options.branch_to_compare_to);
+                break;
+            default:
+            {
+                _logger.LogInformation($"No messages retrieved, due to unsupported event trigger {executionContext}");
                 return new List<string>();
             }
         }
