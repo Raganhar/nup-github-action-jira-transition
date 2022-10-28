@@ -70,6 +70,7 @@ public class Logic
         return e;
     }
     
+    
     private async Task<List<string>> GetCommitMessages(ExecutionContext executionContext)
     {
         switch (executionContext)
