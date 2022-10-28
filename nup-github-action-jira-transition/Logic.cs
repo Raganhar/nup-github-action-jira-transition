@@ -74,8 +74,8 @@ public class Logic
     {
         switch (executionContext)
         {
-            case ExecutionContext.Push: return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "")).Select(x=>x.Message).ToList();
-            case ExecutionContext.PullRequest: return await _branchComparer.Compare(_options.branch_to_compare_to);
+            case ExecutionContext.PullRequest: return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "")).Select(x=>x.Message).ToList();
+            case ExecutionContext.Push: return await _branchComparer.Compare(_options.branch_to_compare_to);
                 break;
             default:
             {
