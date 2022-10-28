@@ -7,6 +7,6 @@ public class MagicStrings
     public static class EventNames
     {
         public const string Push = "push";
-        public const string PullRequest = "pull_request";
+        public const string PullRequest = "pull_request_target";
     }
 }
