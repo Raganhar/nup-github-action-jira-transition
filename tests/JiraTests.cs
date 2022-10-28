@@ -4,15 +4,22 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using ExecutionContext = DotNet.GitHubAction.ExecutionContext;
 
 namespace tests;
 
 [Category("Integration")]
 public class JiraTests
 {
+    public JiraTests(ExecutionContext executionContext)
+    {
+        _executionContext = executionContext;
+    }
+
     private static Jira? _client;
     private string _issueKey;
     private JiraAbstraction _jiraAbstraction;
+    private ExecutionContext _executionContext;
 
     [Test]
     public async Task login_jira_Test()
@@ -33,7 +40,7 @@ public class JiraTests
     {
         var i = (await _jiraAbstraction.findJiraIssues(_issueKey)).First();
         Console.WriteLine(i.Value.Status.Name);
-        await _jiraAbstraction.TransistionIssue(_issueKey,"in progress");
+        await _jiraAbstraction.TransistionIssue(_issueKey,"in progress", _executionContext);
         i = (await _jiraAbstraction.findJiraIssues(_issueKey)).First();
         Console.WriteLine(i.Value.Status.Name);
     }

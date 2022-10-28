@@ -13,6 +13,7 @@ public class Logic
     private readonly GithubActionContext_pullrequest _githubContext;
     private JiraAbstraction _jiraAbstraction;
     private GitGraph _gitGraph;
+    private BranchComparer _branchComparer;
 
     public Logic(ILogger logger, ActionInputs options, GithubActionContext_pullrequest? githubContext)
     {
@@ -21,8 +22,10 @@ public class Logic
         _githubContext = githubContext;
 
         _jiraAbstraction = new JiraAbstraction(_logger,options.JiraUrl, options.JiraUser, options.JiraApiKey);
+        var repo = githubContext.Repository.Split("/").Last();
         _gitGraph = new GitGraph(githubContext.RepositoryOwner, githubContext.Token,
-            githubContext.Repository.Split("/").Last());
+            repo);
+        _branchComparer = new BranchComparer(githubContext.Token, githubContext.RepositoryOwner, repo, _githubContext.Ref.Split("/").Last());
     }
 
     public async Task DoDaThing()
@@ -34,7 +37,8 @@ public class Logic
         }
         else
         {
-            var msgs = await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "");
+            var executionContext = DeriveContext(_githubContext.EventName);
+            var msgs =await GetCommitMessages(executionContext);
             _logger.LogInformation($"Found the following commit messages: {JsonConvert.SerializeObject(msgs,Formatting.Indented)}");
             // find ids
             var ids = FindIssueKeys(msgs);
@@ -43,15 +47,48 @@ public class Logic
             var jiraIssues = await _jiraAbstraction.findJiraIssues(ids.ToArray());
             _logger.LogInformation($"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues.Select(x=>x.Key),Formatting.Indented)}");
             // transistion
-            var tasks = jiraIssues.Select(async x => await _jiraAbstraction.TransistionIssue(x.Key,_githubContext.BaseRef.ToLowerInvariant() == "main"?_options.main_jira_transition:_options.release_jira_transition)).ToList();
+            var tasks = jiraIssues.Select(async x => await _jiraAbstraction.TransistionIssue(x.Key,_githubContext.BaseRef.ToLowerInvariant() == "main"?_options.main_jira_transition:_options.release_jira_transition, executionContext)).ToList();
 
             Task.WaitAll(tasks.ToArray());
         }
     }
 
-    private static IEnumerable<string> FindIssueKeys(List<GitGraph.CommitMessageInfo> msgs)
+    public ExecutionContext DeriveContext(string eventName)
     {
-        return msgs.Where(c => !string.IsNullOrWhiteSpace(c.Message))
-            .SelectMany(x => JiraIssueStringSearcher.FindIds(x.Message));
+        ExecutionContext e = ExecutionContext.Unknown;
+        switch (eventName)
+        {
+            case MagicStrings.EventNames.Push: e =ExecutionContext.Push;
+                break;
+            case MagicStrings.EventNames.PullRequest: e= ExecutionContext.PullRequest;
+                break;
+            default:
+                break;
+        }
+        _logger.LogInformation($"DeriveContext for event trigger {eventName} - determined context: {e}");
+
+        return e;
+    }
+    
+    
+    private async Task<List<string>> GetCommitMessages(ExecutionContext executionContext)
+    {
+        switch (executionContext)
+        {
+            case ExecutionContext.PullRequest: return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "")).Select(x=>x.Message).ToList();
+            case ExecutionContext.Push: return await _branchComparer.Compare(_options.branch_to_compare_to);
+                break;
+            default:
+            {
+                _logger.LogInformation($"No messages retrieved, due to unsupported event trigger {executionContext}");
+                return new List<string>();
+            }
+        }
+    }
+
+    private static IEnumerable<string> FindIssueKeys(List<string> msgs)
+    {
+        return msgs.Where(c => !string.IsNullOrWhiteSpace(c))
+            .SelectMany(x => JiraIssueStringSearcher.FindIds(x));
     }
 }

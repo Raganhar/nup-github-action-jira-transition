@@ -1,23 +1,12 @@
-name: transition-jira-issues-on-pr-merge
+name: transition-jira-issues-on-release-push
 
 on:
   push:
-  pull_request_target:
-      types:
-      - closed
       branches:
-      - main
-      - release
-  workflow_dispatch:
-    inputs:
-      reason:
-        description: 'The reason for running the workflow'
-        required: true
-        default: 'Force do stuff'
+      - release  
 
 jobs:
-  transition-jira-issues-on-pr-merge:
-    if: github.event.pull_request.merged == true
+  transition-jira-issues-on-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: do the thing
         id: fancy-things
-        uses: Raganhar/nup-github-action-jira-transition@main
+        uses: Raganhar/nup-github-action-jira-transition@release
         env:
           GITHUB_CONTEXT: "${{ toJson(github) }}"
         with:
@@ -40,3 +29,4 @@ jobs:
           jira-user: ${{ secrets.JIRA_USER_EMAIL }}
           main-jira-transition: done
           release-jira-transition: in progress
+          branch_to_compare_to: main
