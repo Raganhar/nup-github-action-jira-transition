@@ -10,6 +10,9 @@ inputs:
   release-jira-transition:
     description: 'Transition to be used when merging PRs into release'
     required: false
+  branch_to_compare_to:
+    description: 'Branch name which pushes will be compared to'
+    required: false
   from:
     description: 'Where to search for jira tickets'
     required: false
@@ -60,3 +63,5 @@ runs:
   - ${{ inputs.main-jira-transition }}
   - '--release-jira-transition'
   - ${{ inputs.release-jira-transition }}
+  - '--branch_to_compare_to'
+  - ${{ inputs.branch_to_compare_to }}

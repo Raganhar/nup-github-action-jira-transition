@@ -2,6 +2,8 @@
 using Octokit;
 using Octokit.GraphQL;
 using static Octokit.GraphQL.Variable;
+using Connection = Octokit.GraphQL.Connection;
+using ProductHeaderValue = Octokit.GraphQL.ProductHeaderValue;
 
 namespace DotNet.GitHubAction.OctoStuff;
 

@@ -16,6 +16,8 @@ public class ActionInputs
     
     [Option("main-jira-transition", HelpText = "sample text")]
     public string main_jira_transition { get; set; }
+    [Option("branch-to-compare-to", HelpText = "sample text")]
+    public string branch_to_compare_to { get; set; }
     [Option("release-jira-transition", HelpText = "sample text")]
     public string release_jira_transition { get; set; }
     [Option("jira-url", HelpText = "sample text")]

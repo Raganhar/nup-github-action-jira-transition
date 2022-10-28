@@ -13,6 +13,7 @@ public class Logic
     private readonly GithubActionContext_pullrequest _githubContext;
     private JiraAbstraction _jiraAbstraction;
     private GitGraph _gitGraph;
+    private BranchComparer _branchComparer;
 
     public Logic(ILogger logger, ActionInputs options, GithubActionContext_pullrequest? githubContext)
     {
@@ -21,8 +22,10 @@ public class Logic
         _githubContext = githubContext;
 
         _jiraAbstraction = new JiraAbstraction(_logger,options.JiraUrl, options.JiraUser, options.JiraApiKey);
+        var repo = githubContext.Repository.Split("/").Last();
         _gitGraph = new GitGraph(githubContext.RepositoryOwner, githubContext.Token,
-            githubContext.Repository.Split("/").Last());
+            repo);
+        _branchComparer = new BranchComparer(githubContext.Token, githubContext.RepositoryOwner, repo, _githubContext.Ref.Split("/").Last());
     }
 
     public async Task DoDaThing()
@@ -34,7 +37,7 @@ public class Logic
         }
         else
         {
-            var msgs = await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "");
+            var msgs =await GetCommitMessages(_githubContext);
             _logger.LogInformation($"Found the following commit messages: {JsonConvert.SerializeObject(msgs,Formatting.Indented)}");
             // find ids
             var ids = FindIssueKeys(msgs);
@@ -48,10 +51,25 @@ public class Logic
             Task.WaitAll(tasks.ToArray());
         }
     }
-
-    private static IEnumerable<string> FindIssueKeys(List<GitGraph.CommitMessageInfo> msgs)
+    private async Task<List<string>> GetCommitMessages(GithubActionContext_pullrequest githubActionContextPullrequest)
     {
-        return msgs.Where(c => !string.IsNullOrWhiteSpace(c.Message))
-            .SelectMany(x => JiraIssueStringSearcher.FindIds(x.Message));
+        var eventName = _githubContext.EventName;
+        switch (eventName)
+        {
+            case MagicStrings.EventNames.Push: return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, "")).Select(x=>x.Message).ToList();
+            case MagicStrings.EventNames.PullRequest: return await _branchComparer.Compare(_options.branch_to_compare_to);
+                break;
+            default:
+            {
+                _logger.LogInformation($"No messages retrieved, due to unsupported event trigger {eventName}");
+                return new List<string>();
+            }
+        }
+    }
+
+    private static IEnumerable<string> FindIssueKeys(List<string> msgs)
+    {
+        return msgs.Where(c => !string.IsNullOrWhiteSpace(c))
+            .SelectMany(x => JiraIssueStringSearcher.FindIds(x));
     }
 }
