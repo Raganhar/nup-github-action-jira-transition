@@ -1,7 +1,6 @@
 name: transition-jira-issues-on-pr-merge
 
 on:
-  push:
   pull_request_target:
       types:
       - closed
