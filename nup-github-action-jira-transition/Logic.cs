@@ -55,16 +55,19 @@ public class Logic
 
     public ExecutionContext DeriveContext(string eventName)
     {
+        ExecutionContext e = ExecutionContext.Unknown;
         switch (eventName)
         {
-            case MagicStrings.EventNames.Push: return ExecutionContext.Push;
-            case MagicStrings.EventNames.PullRequest: return ExecutionContext.PullRequest;
+            case MagicStrings.EventNames.Push: e =ExecutionContext.Push;
+                break;
+            case MagicStrings.EventNames.PullRequest: e= ExecutionContext.PullRequest;
+                break;
             default:
-            {
-                _logger.LogInformation($"No messages retrieved, due to unsupported event trigger {eventName}");
-                return ExecutionContext.Unknown;
-            }
+                break;
         }
+        _logger.LogInformation($"DeriveContext for event trigger {eventName} - determined context: {e}");
+
+        return e;
     }
     
     private async Task<List<string>> GetCommitMessages(ExecutionContext executionContext)
