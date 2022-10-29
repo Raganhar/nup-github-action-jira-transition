@@ -61,7 +61,6 @@ public class Logic
             Task.WaitAll(tasks.ToArray());
         }
     }
-    
 
     private string DetermineTransition(TicketState x)
     {
