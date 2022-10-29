@@ -18,6 +18,8 @@ public class ActionInputs
     public string main_jira_transition { get; set; }
     [Option("branch_to_compare_to", HelpText = "sample text")]
     public string branch_to_compare_to { get; set; }
+    [Option("jira_state_when_revert", HelpText = "sample text")]
+    public string jira_state_when_revert { get; set; }
     [Option("release-jira-transition", HelpText = "sample text")]
     public string release_jira_transition { get; set; }
     [Option("jira-url", HelpText = "sample text")]
