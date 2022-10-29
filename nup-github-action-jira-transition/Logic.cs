@@ -14,6 +14,7 @@ public class Logic
     private JiraAbstraction _jiraAbstraction;
     private GitGraph _gitGraph;
     private BranchComparer _branchComparer;
+    private string _currentBranchName;
 
     public Logic(ILogger logger, ActionInputs options, GithubActionContext_pullrequest? githubContext)
     {
@@ -25,8 +26,9 @@ public class Logic
         var repo = githubContext.Repository.Split("/").Last();
         _gitGraph = new GitGraph(githubContext.RepositoryOwner, githubContext.Token,
             repo);
+        _currentBranchName = _githubContext.Ref.Split("/").Last();
         _branchComparer = new BranchComparer(githubContext.Token, githubContext.RepositoryOwner, repo,
-            _githubContext.Ref.Split("/").Last());
+            _currentBranchName);
     }
 
     public async Task DoDaThing()
@@ -57,7 +59,7 @@ public class Logic
                 .ToList();
             // transistion
             var tasks = tickets.Select(async x => await _jiraAbstraction.TransistionIssue(x.Id,
-                DetermineTransition(x), executionContext)).ToList();
+                DetermineTransition(x), executionContext, _currentBranchName)).ToList();
 
             Task.WaitAll(tasks.ToArray());
         }
