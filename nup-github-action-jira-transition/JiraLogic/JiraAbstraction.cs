@@ -50,7 +50,7 @@ public class JiraAbstraction
         });
         var executionContextExplaination = (executionContext==ExecutionContext.Push?$"Branch {currentBranchName} was updated":$"PR is being merged into {currentBranchName}");
         var comment = $"Transitioned ticket {issue.Key} from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to {executionContextExplaination}";
-        await AddComment(issueKey,comment)
+        await AddComment(issueKey, comment);
         _logger.LogInformation(comment);
     }
 }
