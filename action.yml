@@ -7,6 +7,9 @@ inputs:
   main-jira-transition:
     description: 'Transition to be used when merging PRs into main'
     required: true
+  jira_state_when_revert:
+    description: 'Transition to be used when reverting tickets'
+    required: true
   release-jira-transition:
     description: 'Transition to be used when merging PRs into release'
     required: false
@@ -54,3 +57,5 @@ runs:
   - ${{ inputs.release-jira-transition }}
   - '--branch_to_compare_to'
   - ${{ inputs.branch_to_compare_to }}
+  - '--jira_state_when_revert'
+  - ${{ inputs.jira_state_when_revert }}
