@@ -15,9 +15,8 @@ public class HandleRevertTests
 
 This reverts commit 064f44c81c6e05d5bf845c6936b3822036e5da48.
 6158b5",
-            @"Revert ""bob-1 changed readme""This reverts commit 3b0b9409a13a9e49ad1cc9eca9262f33be2ff98e.
-",
             @"bob-1 changed readme",
+            @"Revert ""bob-1 changed readme""This reverts commit 3b0b9409a13a9e49ad1cc9eca9262f33be2ff98e.",
             @"changed bob-2 readme",
         };
 
