@@ -40,6 +40,7 @@ public class JiraAbstraction
         }
         if (issue.Value.Status.Name.ToLowerInvariant() == issueTransition.Name.ToLowerInvariant())
         {
+            _logger.LogInformation($"Ticket ID: {issue.Key} is already in {issueTransition.Name}");
             return;
         }
         await _jirClient.Issues.ExecuteWorkflowActionAsync(issue.Value, issueTransition.Name,new WorkflowTransitionUpdates
