@@ -47,13 +47,14 @@ public class Logic
             var deriveTicketRevertstate = DeriveTicketRevertstate(msgs);
 
             _logger.LogInformation(
-                $"Found the following Ids in commit messages: {JsonConvert.SerializeObject(deriveTicketRevertstate.Select(x=>x.Id).ToList(), Formatting.Indented)}");
+                $"Found the following Ids in commit messages: {JsonConvert.SerializeObject(deriveTicketRevertstate.Select(x => x.Id).ToList(), Formatting.Indented)}");
             // find ids in jira
-            var jiraIssues = await _jiraAbstraction.findJiraIssues(deriveTicketRevertstate.Select(x=>x.Id).ToArray());
+            var jiraIssues = await _jiraAbstraction.findJiraIssues(deriveTicketRevertstate.Select(x => x.Id).ToArray());
             _logger.LogInformation(
                 $"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues.Select(x => x.Key), Formatting.Indented)}");
 
-            var tickets = deriveTicketRevertstate.Where(x=>jiraIssues.Keys.Contains(x.Id.ToUpperInvariant())).ToList();
+            var tickets = deriveTicketRevertstate.Where(x => jiraIssues.Keys.Contains(x.Id.ToUpperInvariant()))
+                .ToList();
             // transistion
             var tasks = tickets.Select(async x => await _jiraAbstraction.TransistionIssue(x.Id,
                 DetermineTransition(x), executionContext)).ToList();
@@ -61,13 +62,15 @@ public class Logic
             Task.WaitAll(tasks.ToArray());
         }
     }
-    
+
 
     private string DetermineTransition(TicketState x)
     {
-        return x.IsReverted?_options.jira_state_when_revert: _githubContext.BaseRef.ToLowerInvariant() == "main"
-            ? _options.main_jira_transition
-            : _options.release_jira_transition;
+        return x.IsReverted
+            ? _options.jira_state_when_revert
+            : _githubContext.BaseRef.ToLowerInvariant() == "main"
+                ? _options.main_jira_transition
+                : _options.release_jira_transition;
     }
 
     public static List<TicketState> DeriveTicketRevertstate(List<string> msgs)
@@ -77,20 +80,17 @@ public class Logic
             {
                 Id = xx,
                 Msg = c.msg
-            })).GroupBy(x=>x.Id).ToList();
+            })).GroupBy(x => x.Id).ToList();
 
-        var ticketStates = c.Select(x=>
+        var ticketStates = c.Select(x =>
         {
             var state = new TicketState();
             state.Id = x.Key;
-            state.Msg = x.First().Msg;
-            var reverts = x.Sum(z=>
-                z.Msg.ToLowerInvariant().Split("revert").Count()-1
-            );
-            var ignore_auto_generated_gitkraken = x.Sum(z=>
-                z.Msg.ToLowerInvariant().Split("this reverts commit").Count()-1
-            );
-            state.IsReverted = (reverts-ignore_auto_generated_gitkraken)%2==1;
+            state.Msg = x.Last().Msg;
+            var msglower = state.Msg.ToLowerInvariant();
+            var reverts = msglower.Split("revert").Count() - 1;
+            var ignore_auto_generated_gitkraken = msglower.Split("this reverts commit").Count() - 1;
+            state.IsReverted = (reverts - ignore_auto_generated_gitkraken) % 2 == 1;
             return state;
         });
         return ticketStates.ToList();
