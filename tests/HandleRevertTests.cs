@@ -28,6 +28,22 @@ This reverts commit 064f44c81c6e05d5bf845c6936b3822036e5da48.
 
         reverted.IsReverted.Should().BeTrue();
         doubleReverted.IsReverted.Should().BeFalse();
+    }
 
+
+    [Test]
+    public async Task Reverteds()
+    {
+        var commits = new List<string>
+        {
+            "done with stuf",
+            "Merge branch 'bob-2' into release",
+            "Revert \"Merge branch 'bob-2' into release\"\n\nThis reverts commit ef8493c93d406f9ab65e75a3af8f6e015cc43702.",
+            "Revert \"Revert \"Merge branch 'bob-2' into release\"\"\n\nThis reverts commit a89bf1a835deefa6c9f4a9a3e487d9eb0633ef09."
+        };
+
+        var ticketStates = Logic.DeriveTicketRevertstate(commits);
+        ticketStates.First(x => x.Id.ToLowerInvariant() == "bob-2".ToLowerInvariant())
+            .IsReverted.Should().BeFalse();
     }
 }
