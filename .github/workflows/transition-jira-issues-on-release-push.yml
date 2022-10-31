@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: do the thing
         id: fancy-things
-        uses: Raganhar/nup-github-action-jira-transition@v1
+        uses: Raganhar/nup-github-action-jira-transition@release
         env:
           GITHUB_CONTEXT: "${{ toJson(github) }}"
         with:

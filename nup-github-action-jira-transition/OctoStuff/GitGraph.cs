@@ -32,6 +32,7 @@ public class GitGraph
                 Message = x.Commit.Message,
                 BaseRefName = x.PullRequest.BaseRefName,
                 HeadRefName = x.PullRequest.HeadRefName,
+                PullRequestUrl = x.PullRequest.Url
             });
 
         var res = await connection.Run(query);
@@ -66,5 +67,6 @@ public class GitGraph
         public string Message { get; set; }
         public string BaseRefName { get; set; }
         public string HeadRefName { get; set; }
+        public string PullRequestUrl { get; set; }
     }
 }

@@ -20,7 +20,7 @@ This reverts commit 064f44c81c6e05d5bf845c6936b3822036e5da48.
             @"changed bob-2 readme",
         };
 
-        var ticketStates = Logic.DeriveTicketRevertstate(commits);
+        var ticketStates = Logic.DeriveTicketRevertstate(commits.Select(x=> (x,"")).ToList());
         var doubleReverted = ticketStates.First(x => x.Id.ToLowerInvariant() == "Dev-877".ToLowerInvariant());
         var reverted = ticketStates.First(x => x.Id.ToLowerInvariant() == "bob-1".ToLowerInvariant());
         ticketStates.First(x => x.Id.ToLowerInvariant() == "bob-2".ToLowerInvariant()).IsReverted.Should().BeFalse();
@@ -41,7 +41,7 @@ This reverts commit 064f44c81c6e05d5bf845c6936b3822036e5da48.
             "Revert \"Revert \"Merge branch 'bob-2' into release\"\"\n\nThis reverts commit a89bf1a835deefa6c9f4a9a3e487d9eb0633ef09."
         };
 
-        var ticketStates = Logic.DeriveTicketRevertstate(commits);
+        var ticketStates = Logic.DeriveTicketRevertstate(commits.Select(x=> (x,"")).ToList());
         ticketStates.First(x => x.Id.ToLowerInvariant() == "bob-2".ToLowerInvariant())
             .IsReverted.Should().BeFalse();
     }
