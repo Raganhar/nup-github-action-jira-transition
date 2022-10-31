@@ -96,13 +96,6 @@ public class Logic
         return ticketStates.ToList();
     }
 
-    // public class TicketState
-    // {
-    //     public string Id { get; set; }
-    //     public bool IsReverted { get; set; }
-    //     public string Msg { get; set; }
-    // }
-
     public ExecutionContext DeriveContext(string eventName)
     {
         ExecutionContext e = ExecutionContext.Unknown;
@@ -140,11 +133,5 @@ public class Logic
                 return new List<(string Message, string Url)>();
             }
         }
-    }
-
-    private static IEnumerable<string> FindIssueKeys(List<string> msgs)
-    {
-        return msgs.Where(c => !string.IsNullOrWhiteSpace(c))
-            .SelectMany(x => JiraIssueStringSearcher.FindIds(x));
     }
 }
