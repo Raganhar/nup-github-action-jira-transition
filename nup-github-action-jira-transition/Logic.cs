@@ -132,7 +132,7 @@ public class Logic
                 return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, ""))
                     .Select(x => (x.Message, x.BaseRefName)).ToList();
             case ExecutionContext.Push:
-                return await _branchComparer.Compare(_options.branch_to_compare_to);
+                return await _branchComparer.Compare(_options.branch_to_compare_to,_logger);
                 break;
             default:
             {
