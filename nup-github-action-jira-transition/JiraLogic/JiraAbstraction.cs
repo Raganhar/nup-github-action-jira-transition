@@ -29,7 +29,8 @@ public class JiraAbstraction
     }
 
     public async Task TransistionIssue(string issueKey, string transistion, ExecutionContext executionContext,
-        string currentBranchName)
+        string currentBranchName,
+        string sha)
     {
         var issue = (await findJiraIssues(issueKey)).First();
         var tra = await Transistions(issue.Key);
@@ -49,7 +50,7 @@ public class JiraAbstraction
             Comment = "no idea comment"
         });
         var executionContextExplaination = (executionContext==ExecutionContext.Push?$"Branch {currentBranchName} was updated":$"PR is being merged into {currentBranchName}");
-        var comment = $"Transitioned ticket {issue.Key} from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to {executionContextExplaination}";
+        var comment = $"Automation: Transitioned ticket {issue.Key} from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to {executionContextExplaination} - additional info: {sha}";
         await AddComment(issueKey, comment);
         _logger.LogInformation(comment);
     }

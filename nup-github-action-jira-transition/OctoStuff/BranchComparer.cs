@@ -19,7 +19,7 @@ public class BranchComparer
         _gitHubClient = github;
         _gitHubClient.Credentials = tokenAuth;   
     }
-    public async Task<List<string>> Compare(string otherBranchHead)
+    public async Task<List<(string Message, string Sha)>> Compare(string otherBranchHead)
     {
         
         var res = await _gitHubClient.Repository.Get(_repoOwner, _repo);
@@ -29,6 +29,6 @@ public class BranchComparer
         var comitdiff = await _gitHubClient.Repository.Commit.Compare(_repoOwner,
             _repo, main.Commit.Sha, other.Commit.Sha);
 
-        return comitdiff.Commits.Select(x => x.Commit.Message).ToList();
+        return comitdiff.Commits.Select(x => (x.Commit.Message, x.Commit.Sha )).ToList();
     }
 }

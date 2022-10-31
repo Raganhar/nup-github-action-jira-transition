@@ -3,6 +3,7 @@ using DotNet.GitHubAction.JiraLogic;
 using DotNet.GitHubAction.OctoStuff;
 using MoreLinq;
 using Newtonsoft.Json;
+using Octokit.GraphQL;
 
 namespace DotNet.GitHubAction;
 
@@ -59,51 +60,48 @@ public class Logic
                 .ToList();
             // transistion
             var tasks = tickets.Select(async x => await _jiraAbstraction.TransistionIssue(x.Id,
-                DetermineTransition(x), executionContext, _currentBranchName)).ToList();
+                DetermineTransition(x.IsReverted), executionContext, _currentBranchName,x.Sha)).ToList();
 
             Task.WaitAll(tasks.ToArray());
         }
     }
 
 
-    private string DetermineTransition(TicketState x)
+    private string DetermineTransition(bool isReverted)
     {
-        return x.IsReverted
+        return isReverted
             ? _options.jira_state_when_revert
             : _githubContext.BaseRef.ToLowerInvariant() == "main"
                 ? _options.main_jira_transition
                 : _options.release_jira_transition;
     }
 
-    public static List<TicketState> DeriveTicketRevertstate(List<string> msgs)
+    public static List<(string Id, string Msg, bool IsReverted, string Sha)> DeriveTicketRevertstate(List<(string Message, string Sha)> msgs)
     {
-        var c = msgs.Select(x => new { ids = JiraIssueStringSearcher.FindIds(x), msg = x })
-            .SelectMany(c => c.ids.Select(xx => new TicketState
-            {
-                Id = xx,
-                Msg = c.msg
-            })).GroupBy(x => x.Id).ToList();
+        var c = msgs.Select(x => new { ids = JiraIssueStringSearcher.FindIds(x.Message), m = x })
+            .SelectMany(c => c.ids.Select(xx => (
+                Sha:c.m.Sha,
+                Id: xx,
+                Msg : c.m.Message)).GroupBy(x => x.Id).ToList());
 
         var ticketStates = c.Select(x =>
         {
-            var state = new TicketState();
-            state.Id = x.Key;
-            state.Msg = x.Last().Msg;
-            var msglower = state.Msg.ToLowerInvariant();
+            var Msg = x.Last().Msg;
+            var msglower = Msg.ToLowerInvariant();
             var reverts = msglower.Split("revert").Count() - 1;
             var ignore_auto_generated_gitkraken = msglower.Split("this reverts commit").Count() - 1;
-            state.IsReverted = (reverts - ignore_auto_generated_gitkraken) % 2 == 1;
-            return state;
+            var isReverted = (reverts - ignore_auto_generated_gitkraken) % 2 == 1;
+            return (Id: x.Key, Msg:Msg,IsReverted:isReverted, Sha:x.Last().Sha);
         });
         return ticketStates.ToList();
     }
 
-    public class TicketState
-    {
-        public string Id { get; set; }
-        public bool IsReverted { get; set; }
-        public string Msg { get; set; }
-    }
+    // public class TicketState
+    // {
+    //     public string Id { get; set; }
+    //     public bool IsReverted { get; set; }
+    //     public string Msg { get; set; }
+    // }
 
     public ExecutionContext DeriveContext(string eventName)
     {
@@ -126,20 +124,20 @@ public class Logic
     }
 
 
-    private async Task<List<string>> GetCommitMessages(ExecutionContext executionContext)
+    private async Task<List<(string Message, string Sha)>> GetCommitMessages(ExecutionContext executionContext)
     {
         switch (executionContext)
         {
             case ExecutionContext.PullRequest:
                 return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, ""))
-                    .Select(x => x.Message).ToList();
+                    .Select(x => (x.Message, x.BaseRefName)).ToList();
             case ExecutionContext.Push:
                 return await _branchComparer.Compare(_options.branch_to_compare_to);
                 break;
             default:
             {
                 _logger.LogInformation($"No messages retrieved, due to unsupported event trigger {executionContext}");
-                return new List<string>();
+                return new List<(string Message, string Sha)>();
             }
         }
     }
