@@ -24,3 +24,4 @@ only 2 use cases are supported:
           main-jira-transition: done
           release-jira-transition: in progress
           branch_to_compare_to: main
+- 
