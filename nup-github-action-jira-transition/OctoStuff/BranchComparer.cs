@@ -20,7 +20,7 @@ public class BranchComparer
         _gitHubClient = github;
         _gitHubClient.Credentials = tokenAuth;   
     }
-    public async Task<List<(string Message, string Sha)>> Compare(string otherBranchHead, ILogger logger)
+    public async Task<List<(string Message, string Url)>> Compare(string otherBranchHead, ILogger logger)
     {
         
         var res = await _gitHubClient.Repository.Get(_repoOwner, _repo);
@@ -31,6 +31,6 @@ public class BranchComparer
             _repo, main.Commit.Sha, other.Commit.Sha);
 
         logger.LogInformation($"Found: {JsonConvert.SerializeObject(comitdiff, Formatting.Indented, new JsonSerializerSettings{ReferenceLoopHandling = ReferenceLoopHandling.Ignore})}");
-        return comitdiff.Commits.Select(x => (x.Commit.Message, x.Commit.Ref )).ToList();
+        return comitdiff.Commits.Select(x => (x.Commit.Message, x.Url )).ToList();
     }
 }

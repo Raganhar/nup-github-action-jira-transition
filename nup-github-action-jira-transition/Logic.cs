@@ -76,11 +76,11 @@ public class Logic
                 : _options.release_jira_transition;
     }
 
-    public static List<(string Id, string Msg, bool IsReverted, string Sha)> DeriveTicketRevertstate(List<(string Message, string Sha)> msgs)
+    public static List<(string Id, string Msg, bool IsReverted, string Sha)> DeriveTicketRevertstate(List<(string Message, string Url)> msgs)
     {
         var c = msgs.Select(x => new { ids = JiraIssueStringSearcher.FindIds(x.Message), m = x })
             .SelectMany(c => c.ids.Select(xx => (
-                Sha:c.m.Sha,
+                Sha:c.m.Url,
                 Id: xx,
                 Msg : c.m.Message)).GroupBy(x => x.Id).ToList());
 
@@ -124,20 +124,20 @@ public class Logic
     }
 
 
-    private async Task<List<(string Message, string Sha)>> GetCommitMessages(ExecutionContext executionContext)
+    private async Task<List<(string Message, string Url)>> GetCommitMessages(ExecutionContext executionContext)
     {
         switch (executionContext)
         {
             case ExecutionContext.PullRequest:
                 return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, ""))
-                    .Select(x => (x.Message, x.BaseRefName)).ToList();
+                    .Select(x => (x.Message, x.PullRequestUrl)).ToList();
             case ExecutionContext.Push:
                 return await _branchComparer.Compare(_options.branch_to_compare_to,_logger);
                 break;
             default:
             {
                 _logger.LogInformation($"No messages retrieved, due to unsupported event trigger {executionContext}");
-                return new List<(string Message, string Sha)>();
+                return new List<(string Message, string Url)>();
             }
         }
     }
