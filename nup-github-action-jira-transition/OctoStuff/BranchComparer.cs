@@ -29,6 +29,6 @@ public class BranchComparer
         var comitdiff = await _gitHubClient.Repository.Commit.Compare(_repoOwner,
             _repo, main.Commit.Sha, other.Commit.Sha);
 
-        return comitdiff.Commits.Select(x => (x.Commit.Message, x.Commit.Sha )).ToList();
+        return comitdiff.Commits.Select(x => (x.Commit.Message, x.Commit.Ref )).ToList();
     }
 }
