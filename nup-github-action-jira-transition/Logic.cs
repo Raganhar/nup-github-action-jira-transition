@@ -59,7 +59,7 @@ public class Logic
             var tickets = deriveTicketRevertstate.GroupBy(x=>x.Id).Where(x => jiraIssues.Keys.Contains(x.Key.ToUpperInvariant()))
                 .ToList();
 
-            var guessIsLast = tickets.Select(x => x.First()).ToList();
+            var guessIsLast = tickets.Select(x => x.Last()).ToList();
             
             var tasks = guessIsLast.Select(async x => await _jiraAbstraction.TransistionIssue(x.Id,
                 DetermineTransition(x.IsReverted), executionContext, _currentBranchName,x.Sha)).ToList();
