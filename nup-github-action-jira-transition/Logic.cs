@@ -56,10 +56,12 @@ public class Logic
             _logger.LogInformation(
                 $"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues.Select(x => x.Key), Formatting.Indented)}");
 
-            var tickets = deriveTicketRevertstate.Where(x => jiraIssues.Keys.Contains(x.Id.ToUpperInvariant()))
+            var tickets = deriveTicketRevertstate.GroupBy(x=>x.Id).Where(x => jiraIssues.Keys.Contains(x.Key.ToUpperInvariant()))
                 .ToList();
-            // transistion
-            var tasks = tickets.Select(async x => await _jiraAbstraction.TransistionIssue(x.Id,
+
+            var guessIsLast = tickets.Select(x => x.First()).ToList();
+            
+            var tasks = guessIsLast.Select(async x => await _jiraAbstraction.TransistionIssue(x.Id,
                 DetermineTransition(x.IsReverted), executionContext, _currentBranchName,x.Sha)).ToList();
 
             Task.WaitAll(tasks.ToArray());

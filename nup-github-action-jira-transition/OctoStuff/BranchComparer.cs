@@ -30,7 +30,6 @@ public class BranchComparer
         var comitdiff = await _gitHubClient.Repository.Commit.Compare(_repoOwner,
             _repo, main.Commit.Sha, other.Commit.Sha);
 
-        // logger.LogInformation($"Found: {JsonConvert.SerializeObject(comitdiff, Formatting.Indented, new JsonSerializerSettings{ReferenceLoopHandling = ReferenceLoopHandling.Ignore})}");
         return comitdiff.Commits.Select(x => (x.Commit.Message, x.Url )).ToList();
     }
 }
