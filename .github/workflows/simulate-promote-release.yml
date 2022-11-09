@@ -1,0 +1,31 @@
+on:
+  workflow_dispatch:
+
+name: Create Release
+
+jobs:
+   transition-jira-issues-on-trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      # - name: Dump GitHub context
+      #   env:
+      #     GITHUB_CONTEXT: ${{ toJson(github) }}
+      #   run: |
+      #     echo "$GITHUB_CONTEXT"
+      - uses: actions/checkout@v3
+      - name: do the thing
+        id: fancy-things
+        uses: Raganhar/nup-github-action-jira-transition@release
+        env:
+          GITHUB_CONTEXT: "${{ toJson(github) }}"
+        with:
+          jira-api-key: ${{ secrets.JIRA_API_TOKEN }}
+          jira-url: ${{ secrets.JIRA_BASE_URL }}
+          jira-user: ${{ secrets.JIRA_USER_EMAIL }}
+          main-jira-transition: done
+          release-jira-transition: in progress
+          branch_to_compare_to: main
+          jira_state_when_revert: to do
+          
+          
