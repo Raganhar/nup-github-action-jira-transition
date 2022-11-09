@@ -26,7 +26,7 @@ public class Logic
         _jiraAbstraction = new JiraAbstraction(_logger, options.JiraUrl, options.JiraUser, options.JiraApiKey);
         var repo = githubContext.Repository.Split("/").Last();
         _gitGraph = new GitGraph(githubContext.RepositoryOwner, githubContext.Token,
-            repo);
+            repo, logger);
         _currentBranchName = _githubContext.Ref.Split("/").Last();
         _branchComparer = new BranchComparer(githubContext.Token, githubContext.RepositoryOwner, repo,
             _currentBranchName);
@@ -132,7 +132,15 @@ public class Logic
             case ExecutionContext.Push:
             case ExecutionContext.Workflow_trigger:
             case ExecutionContext.Unknown:
-                return await _branchComparer.Compare(_options.branch_to_compare_to,_logger);
+                if (_currentBranchName == _options.branch_to_compare_to)
+                {
+                    _logger.LogInformation($"Current branch and compare to branch was the same, so just getting the latest commit for branch: {_currentBranchName}");
+                   return await _gitGraph.bob(_options.branch_to_compare_to);
+                }
+                else
+                {
+                    return await _branchComparer.Compare(_options.branch_to_compare_to,_logger);
+                }
                 break;
             default:
             {

@@ -25,4 +25,10 @@
     <Folder Include="Extensions" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Credentials.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

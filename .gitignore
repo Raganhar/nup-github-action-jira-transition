@@ -353,3 +353,4 @@ src/coreclr/src/System.Private.CoreLib/common
 !src/coreclr/src/debug
 
 tests/Credentials.txt
+/nup-github-action-jira-transition/Credentials.txt

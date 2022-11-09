@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DotNet.GitHubAction.OctoStuff.OctoKitAutoModels;
+using Newtonsoft.Json;
 using Octokit;
 using Octokit.GraphQL;
 using static Octokit.GraphQL.Variable;
@@ -12,12 +13,14 @@ public class GitGraph
     private string _repoowner;
     private string _githubToken;
     private string _repo;
+    private readonly ILogger _logger;
 
-    public GitGraph(string repoowner, string githubToken, string repo)
+    public GitGraph(string repoowner, string githubToken, string repo, ILogger logger)
     {
         _repoowner = repoowner;
         _githubToken = githubToken;
         _repo = repo;
+        _logger = logger;
     }
     public async Task<List<CommitMessageInfo>> listCommitMessagesInPullRequest(int prnumber, string after)
     {
@@ -39,27 +42,42 @@ public class GitGraph
         return res.ToList();
     }
     
-    public async Task doStuff(string repoowner,string github_token)
+    public async Task<List<(string Message, string Url)>> bob(string branchName)
     {
-        var connection = new Connection(new ProductHeaderValue("bob"), github_token);
-
-        var query = new Query()
-            .RepositoryOwner(repoowner)
-            .Repositories(first: 30)
-            .Nodes
-            .Select(x => new
-            {
-                Name = x.Name,
-                Description = x.Description,
-            });
-        var vars = new Dictionary<string, object>
+        var connection = new Connection(new ProductHeaderValue("bob"), _githubToken);
+        var querystring = @"{
+  repository(owner: ""raganhar"", name: ""nup-github-action-jira-transition"") {
+    ref (qualifiedName:""main"") {
+          ... on Ref {
+            name
+            target {
+              ... on Commit {
+                history(first: 1) {
+                  edges {
+                    node {
+                      ... on Commit {
+                        committedDate
+                        message
+                        oid
+                        url
+                      }
+                    }
+                  }
+                }
+            }
+          }
+      }
+    }
+  }
+}";
+        var res = await connection.Run(new TextQuery(querystring).ToString());
+        var data = JsonConvert.DeserializeObject<root>(res);
+        
+        var lastCommit = data.Data.Repository.Ref.Target.History.Edges.First();
+        return new List<(string Message, string Url)>
         {
-            { "owner", "octokit" },
-            { "name", "octokit.graphql.net" },
+            new (lastCommit.Node.Message, lastCommit.Node.Url)
         };
-
-        var res = await connection.Run(query);
-        Console.WriteLine(JsonConvert.SerializeObject(res,Formatting.Indented));
     }
 
     public class CommitMessageInfo
@@ -68,5 +86,29 @@ public class GitGraph
         public string BaseRefName { get; set; }
         public string HeadRefName { get; set; }
         public string PullRequestUrl { get; set; }
+    }
+    public class TextQuery 
+    {
+        private readonly string _queryText;
+        private readonly Dictionary<string, object> _variables;
+
+        public TextQuery(string queryText, Dictionary<string, object> variables = null)
+        {
+            _queryText = queryText;
+            _variables = variables;
+        }
+
+        public override string ToString()
+        {
+            var query = new
+            {
+                query = _queryText,
+                _variables = _variables
+            };
+
+            var json = JsonConvert.SerializeObject(query);
+            return json;
+        }
+
     }
 }
