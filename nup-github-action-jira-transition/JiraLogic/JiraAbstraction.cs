@@ -49,7 +49,7 @@ public class JiraAbstraction
         {
             Comment = "no idea comment"
         });
-        var executionContextExplaination = (executionContext==ExecutionContext.Push?$"Branch {currentBranchName} was updated":$"PR is being merged into {currentBranchName}");
+        var executionContextExplaination = new List<ExecutionContext>{ExecutionContext.Push,ExecutionContext.Unknown}.Contains(executionContext)?$"Branch {currentBranchName} was updated":$"PR is being merged into {currentBranchName}";
         var comment = $"Automation: Transitioned ticket {issue.Key} from \"{issue.Value.Status}\" to \"{issueTransition.Name}\" due to {executionContextExplaination} - additional info: {sha}";
         await AddComment(issueKey, comment);
         _logger.LogInformation(comment);

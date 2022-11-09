@@ -131,6 +131,7 @@ public class Logic
                     .Select(x => (x.Message, x.PullRequestUrl)).ToList();
             case ExecutionContext.Push:
             case ExecutionContext.Workflow_trigger:
+            case ExecutionContext.Unknown:
                 return await _branchComparer.Compare(_options.branch_to_compare_to,_logger);
                 break;
             default:
