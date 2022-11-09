@@ -1,7 +1,7 @@
 on:
   workflow_dispatch:
 
-name: Create Release
+name: Simulate create release
 
 jobs:
    transition-jira-issues-on-trigger:
