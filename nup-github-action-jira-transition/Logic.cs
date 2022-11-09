@@ -73,7 +73,7 @@ public class Logic
     {
         return isReverted
             ? _options.jira_state_when_revert
-            : _githubContext.BaseRef.ToLowerInvariant() == "main"
+            : (_githubContext.BaseRef.ToLowerInvariant() == "main" ||_githubContext.Ref.Split("/").Last() =="main")
                 ? _options.main_jira_transition
                 : _options.release_jira_transition;
     }
