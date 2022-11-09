@@ -109,6 +109,9 @@ public class Logic
             case MagicStrings.EventNames.PullRequest:
                 e = ExecutionContext.PullRequest;
                 break;
+            case MagicStrings.EventNames.workflow_dispatch:
+                e = ExecutionContext.Workflow_trigger;
+                break;
             default:
                 break;
         }
@@ -127,6 +130,7 @@ public class Logic
                 return (await _gitGraph.listCommitMessagesInPullRequest((int)_githubContext.Event.Number, ""))
                     .Select(x => (x.Message, x.PullRequestUrl)).ToList();
             case ExecutionContext.Push:
+            case ExecutionContext.Workflow_trigger:
                 return await _branchComparer.Compare(_options.branch_to_compare_to,_logger);
                 break;
             default:
