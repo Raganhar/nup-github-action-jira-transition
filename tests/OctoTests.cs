@@ -22,7 +22,7 @@ public class OctoTests
     [Test]
     public async Task Get_previous_commit_Test()
     {
-        var msgs = await _gitGraph.bob("main");
+        var msgs = await _gitGraph.Parents("main");
         Console.WriteLine(JsonConvert.SerializeObject(msgs, Formatting.Indented));
     }
 

@@ -134,8 +134,9 @@ public class Logic
             case ExecutionContext.Unknown:
                 if (_currentBranchName == _options.branch_to_compare_to)
                 {
-                    _logger.LogInformation($"Current branch and compare to branch was the same, so just getting the latest commit for branch: {_currentBranchName}");
-                   return await _gitGraph.bob(_options.branch_to_compare_to);
+                    _logger.LogInformation($"Current branch and compare to branch was the same, so getting parents of latest commit to figure out what the diff was: {_currentBranchName}");
+                    var valueTuples = await _gitGraph.Parents(_options.branch_to_compare_to);
+                    return await _branchComparer.CommitDiff(valueTuples.sha1,valueTuples.sha2);
                 }
                 else
                 {

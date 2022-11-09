@@ -27,9 +27,16 @@ public class BranchComparer
         var main = await _gitHubClient.Repository.Branch.Get(res.Id, otherBranchHead);
         var other = await _gitHubClient.Repository.Branch.Get(res.Id, _currentBranchName);
 
-        var comitdiff = await _gitHubClient.Repository.Commit.Compare(_repoOwner,
-            _repo, main.Commit.Sha, other.Commit.Sha);
+        var baseCommitSha = main.Commit.Sha;
+        var otherCommitSha = other.Commit.Sha;
+        return await CommitDiff(baseCommitSha, otherCommitSha);
+    }
 
-        return comitdiff.Commits.Select(x => (x.Commit.Message, x.Url )).ToList();
+    public async Task<List<(string Message, string Url)>> CommitDiff(string baseCommitSha, string otherCommitSha)
+    {
+        var comitdiff = await _gitHubClient.Repository.Commit.Compare(_repoOwner,
+            _repo, baseCommitSha, otherCommitSha);
+
+        return comitdiff.Commits.Select(x => (x.Commit.Message, x.Url)).ToList();
     }
 }

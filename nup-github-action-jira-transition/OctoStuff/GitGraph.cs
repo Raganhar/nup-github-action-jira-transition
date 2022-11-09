@@ -42,42 +42,46 @@ public class GitGraph
         return res.ToList();
     }
     
-    public async Task<List<(string Message, string Url)>> bob(string branchName)
+    public async Task<(string sha1, string sha2)> Parents(string branchName)
     {
         var connection = new Connection(new ProductHeaderValue("bob"), _githubToken);
-        var querystring = @"{
-  repository(owner: ""raganhar"", name: ""nup-github-action-jira-transition"") {
-    ref (qualifiedName:""main"") {
-          ... on Ref {
-            name
-            target {
-              ... on Commit {
-                history(first: 1) {
-                  edges {
-                    node {
-                      ... on Commit {
+        var querystring = @$"{{
+  repository(owner: ""{_repoowner}"", name: ""{_repo}"") {{
+    ref (qualifiedName:""{branchName}"") {{
+          ... on Ref {{
+            target {{
+              ... on Commit {{
+                history(first: 1) {{
+                  edges {{
+                    node {{
+                      ... on Commit {{
                         committedDate
                         message
-                        oid
-                        url
-                      }
-                    }
-                  }
-                }
-            }
-          }
-      }
-    }
-  }
-}";
+                        oid,
+                        url,
+                         parents(first: 2) {{
+                          edges {{
+                            node {{
+                              message
+                              oid
+                            }}
+                          }}
+                        }}
+                      }}
+                    }}
+                  }}
+                }}
+            }}
+          }}
+      }}
+    }}
+  }}
+}}";
         var res = await connection.Run(new TextQuery(querystring).ToString());
-        var data = JsonConvert.DeserializeObject<root>(res);
+        var data = JsonConvert.DeserializeObject<graphQlResult>(res);
         
         var lastCommit = data.Data.Repository.Ref.Target.History.Edges.First();
-        return new List<(string Message, string Url)>
-        {
-            new (lastCommit.Node.Message, lastCommit.Node.Url)
-        };
+        return new(lastCommit.Node.Parents.Edges.First().Node.Oid,lastCommit.Node.Parents.Edges.Last().Node.Oid);
     }
 
     public class CommitMessageInfo
