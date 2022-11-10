@@ -27,6 +27,7 @@ jobs:
           release-jira-transition: in progress
           branch_to_compare_to: main
           jira_state_when_revert: to do
-          ignore_tickets_in_following_states: main,main
+          ignore_tickets_in_following_states: done,Done
+
           
           
