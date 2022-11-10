@@ -41,7 +41,7 @@ public class JiraTests
         var i = (await _jiraAbstraction.findJiraIssues(_issueKey)).First();
         Console.WriteLine(i.Value.Status.Name);
         await _jiraAbstraction. 
-            TransistionIssue(_issueKey,"in progress", _executionContext,"","");
+            TransistionIssue(_issueKey,"in progress", _executionContext,"","", new List<string>());
         i = (await _jiraAbstraction.findJiraIssues(_issueKey)).First();
         Console.WriteLine(i.Value.Status.Name);
     }
