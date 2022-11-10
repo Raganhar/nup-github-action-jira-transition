@@ -31,6 +31,9 @@ inputs:
   text:
     description: 'Sample text to search'
     required: false
+  ignore_tickets_in_following_states:
+    description: 'Sample text to search'
+    required: false
 outputs:
   summary-title:
     description: 'The title of the code metrics action.'
@@ -59,3 +62,5 @@ runs:
   - ${{ inputs.branch_to_compare_to }}
   - '--jira_state_when_revert'
   - ${{ inputs.jira_state_when_revert }}
+  - '--ignore_tickets_in_following_states'
+  - ${{ inputs.ignore_tickets_in_following_states }}

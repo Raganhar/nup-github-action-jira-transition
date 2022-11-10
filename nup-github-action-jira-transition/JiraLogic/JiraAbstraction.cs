@@ -30,7 +30,7 @@ public class JiraAbstraction
 
     public async Task TransistionIssue(string issueKey, string transistion, ExecutionContext executionContext,
         string currentBranchName,
-        string sha)
+        string sha, List<string> ignoreJiraStates)
     {
         var issue = (await findJiraIssues(issueKey)).First();
         var tra = await Transistions(issue.Key);
@@ -38,6 +38,11 @@ public class JiraAbstraction
         if (issueTransition == null)
         {
             _logger.LogInformation($"Unable to transition {issueKey} to {transistion} since it doesn't exist in it's workflow");
+            return;
+        } 
+        if (ignoreJiraStates.Contains(issue.Value.Status.Name.ToLowerInvariant()))
+        {
+            _logger.LogInformation($"Will not transition ticket {issueKey} from {issue.Value.Status} since the Jira state is within the 'ignore tickets in {string.Join(',',ignoreJiraStates)} state' list");
             return;
         }
         if (issue.Value.Status.Name.ToLowerInvariant() == issueTransition.Name.ToLowerInvariant())

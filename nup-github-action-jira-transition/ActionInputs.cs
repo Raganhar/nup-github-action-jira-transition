@@ -14,6 +14,8 @@ public class ActionInputs
         }
     }
     
+    [Option("ignore_tickets_in_following_states", HelpText = "sample text")]
+    public string ignore_tickets_in_following_states { get; set; }
     [Option("main-jira-transition", HelpText = "sample text")]
     public string main_jira_transition { get; set; }
     [Option("branch_to_compare_to", HelpText = "sample text")]

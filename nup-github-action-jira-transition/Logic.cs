@@ -16,6 +16,7 @@ public class Logic
     private GitGraph _gitGraph;
     private BranchComparer _branchComparer;
     private string _currentBranchName;
+    private List<string> _ignoreJiraStates;
 
     public Logic(ILogger logger, ActionInputs options, GithubActionContext_pullrequest? githubContext)
     {
@@ -30,6 +31,8 @@ public class Logic
         _currentBranchName = _githubContext.Ref.Split("/").Last();
         _branchComparer = new BranchComparer(githubContext.Token, githubContext.RepositoryOwner, repo,
             _currentBranchName);
+        _ignoreJiraStates = _options.ignore_tickets_in_following_states?.Split(",").Select(x => x.ToLowerInvariant().Trim()).ToList() ??
+                            new List<string>();
     }
 
     public async Task DoDaThing()
@@ -56,13 +59,14 @@ public class Logic
             _logger.LogInformation(
                 $"Found the following Ids in Jira: {JsonConvert.SerializeObject(jiraIssues.Select(x => x.Key), Formatting.Indented)}");
 
-            var tickets = deriveTicketRevertstate.GroupBy(x=>x.Id).Where(x => jiraIssues.Keys.Contains(x.Key.ToUpperInvariant()))
+            var tickets = deriveTicketRevertstate.GroupBy(x => x.Id)
+                .Where(x => jiraIssues.Keys.Contains(x.Key.ToUpperInvariant()))
                 .ToList();
 
             var guessIsLast = tickets.Select(x => x.Last()).ToList();
-            
+
             var tasks = guessIsLast.Select(async x => await _jiraAbstraction.TransistionIssue(x.Id,
-                DetermineTransition(x.IsReverted), executionContext, _currentBranchName,x.Sha)).ToList();
+                DetermineTransition(x.IsReverted), executionContext, _currentBranchName, x.Sha, _ignoreJiraStates)).ToList();
 
             Task.WaitAll(tasks.ToArray());
         }
@@ -73,18 +77,19 @@ public class Logic
     {
         return isReverted
             ? _options.jira_state_when_revert
-            : (_githubContext.BaseRef.ToLowerInvariant() == "main" ||_githubContext.Ref.Split("/").Last() =="main")
+            : (_githubContext.BaseRef.ToLowerInvariant() == "main" || _githubContext.Ref.Split("/").Last() == "main")
                 ? _options.main_jira_transition
                 : _options.release_jira_transition;
     }
 
-    public static List<(string Id, string Msg, bool IsReverted, string Sha)> DeriveTicketRevertstate(List<(string Message, string Url)> msgs)
+    public static List<(string Id, string Msg, bool IsReverted, string Sha)> DeriveTicketRevertstate(
+        List<(string Message, string Url)> msgs)
     {
         var c = msgs.Select(x => new { ids = JiraIssueStringSearcher.FindIds(x.Message), m = x })
             .SelectMany(c => c.ids.Select(xx => (
-                Sha:c.m.Url,
+                Sha: c.m.Url,
                 Id: xx,
-                Msg : c.m.Message)).GroupBy(x => x.Id).ToList());
+                Msg: c.m.Message)).GroupBy(x => x.Id).ToList());
 
         var ticketStates = c.Select(x =>
         {
@@ -93,7 +98,7 @@ public class Logic
             var reverts = msglower.Split("revert").Count() - 1;
             var ignore_auto_generated_gitkraken = msglower.Split("this reverts commit").Count() - 1;
             var isReverted = (reverts - ignore_auto_generated_gitkraken) % 2 == 1;
-            return (Id: x.Key, Msg:Msg,IsReverted:isReverted, Sha:x.Last().Sha);
+            return (Id: x.Key, Msg: Msg, IsReverted: isReverted, Sha: x.Last().Sha);
         });
         return ticketStates.ToList();
     }
@@ -134,14 +139,16 @@ public class Logic
             case ExecutionContext.Unknown:
                 if (_currentBranchName == _options.branch_to_compare_to)
                 {
-                    _logger.LogInformation($"Current branch and compare to branch was the same, so getting parents of latest commit to figure out what the diff was: {_currentBranchName}");
+                    _logger.LogInformation(
+                        $"Current branch and compare to branch was the same, so getting parents of latest commit to figure out what the diff was: {_currentBranchName}");
                     var valueTuples = await _gitGraph.Parents(_options.branch_to_compare_to);
-                    return await _branchComparer.CommitDiff(valueTuples.sha1,valueTuples.sha2);
+                    return await _branchComparer.CommitDiff(valueTuples.sha1, valueTuples.sha2);
                 }
                 else
                 {
-                    return await _branchComparer.Compare(_options.branch_to_compare_to,_logger);
+                    return await _branchComparer.Compare(_options.branch_to_compare_to, _logger);
                 }
+
                 break;
             default:
             {
