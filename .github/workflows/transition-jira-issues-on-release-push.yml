@@ -7,7 +7,7 @@ on:
       - main  
 
 jobs:
-  transition-jira-issues-on-push:
+  transition-jira-issues-on-push-release:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/release'
 
@@ -32,7 +32,7 @@ jobs:
           branch_to_compare_to: main
           jira_state_when_revert: to do
 
-  transition-jira-issues-on-push:
+  transition-jira-issues-on-push-main:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
